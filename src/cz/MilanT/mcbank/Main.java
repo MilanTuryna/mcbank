@@ -2,11 +2,17 @@ package cz.MilanT.mcbank;
 
 import cz.MilanT.mcbank.commands.BankCommand;
 import cz.MilanT.mcbank.libraries.Vault;
+import cz.MilanT.mcbank.listeners.PlayerListener;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main extends JavaPlugin {
+public class Main extends JavaPlugin implements Listener {
     private ConfigManager configManager;
 
     public boolean vaultActive = false; // variable for checking if vault working
@@ -21,7 +27,9 @@ public class Main extends JavaPlugin {
         if(vault.setupEconomy()) {
             this.log("Plugin was enabled and VaultAPI is perfectly working.");
             this.vaultActive = true;
+
             this.getCommand("mcbank").setExecutor(new BankCommand(this.configManager, vault));
+            this.getServer().getPluginManager().registerEvents(new PlayerListener(this.configManager, vault), this);
         } else {
             this.log("Plugin will be disabled, because Vault isn't working.");
             this.getPluginLoader().disablePlugin(this);

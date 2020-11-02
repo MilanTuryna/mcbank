@@ -5,6 +5,17 @@
 #    https://github.com/MilanTuryna
 #    https://turyna.eu/
 #
+# JOIN-EVENT MESSAGE VARIABLES: %player%, %balance%, %actualDeposit%, %actualWithdraw%s
+#
 
 prefix: ""
 currencySymbol: "$"
+events:
+  joinEvent:
+    message: "Hello %player%! amount: %balance%, deposit: %actualDeposit%, withdraw: %actualWithdraw%"
+    withdraw: 0
+    deposit: 0
+  quitEvent:
+    withdraw: 0
+    deposit: 0
+
