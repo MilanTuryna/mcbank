@@ -123,10 +123,14 @@ public class BankCommand implements CommandExecutor {
                                 player.sendMessage(this.configManager.getMessage(Messages.PM_THANKS_TO_SPONSOR));
                                 plugin.getServer().broadcastMessage(this.configManager.getMessage(Messages.BC_THANKS_TO_SPONSOR));
                             } else {
-                                player.sendMessage(configManager.getError(Errors.BAD_ARGUMENT));
+                                player.sendMessage(configManager.getError(Errors.BIGGER_AMOUNT)
+                                        .replace(Variables.CURRENCY_SYMBOL, String.valueOf(configManager.getCurrency()))
+                                        .replace(Variables.PAY_AMOUNT, String.valueOf(payAmount))
+                                        .replace(Variables.BALANCE, String.valueOf(playerBalance))
+                                );
                             }
                         } else {
-                            player.sendMessage(configManager.getError(Errors.BIGGER_AMOUNT));
+                            player.sendMessage(configManager.getError(Errors.BAD_ARGUMENT));
                         }
                     }
                 }
