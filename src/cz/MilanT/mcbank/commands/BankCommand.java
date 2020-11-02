@@ -1,6 +1,7 @@
 package cz.MilanT.mcbank.commands;
 
 import cz.MilanT.mcbank.constants.Errors;
+import cz.MilanT.mcbank.constants.Permissions;
 import cz.MilanT.mcbank.constants.Variables;
 import cz.MilanT.mcbank.libraries.Vault;
 import cz.MilanT.mcbank.managers.ConfigManager;
@@ -35,11 +36,11 @@ public class BankCommand implements CommandExecutor {
 
             if(args.length > 1) {
                 Economy economy = vault.getEcon();
-                if(args[0].equalsIgnoreCase("status") && this.checkPermission(player, "mcbank.status")) {
+                if(args[0].equalsIgnoreCase("status") && this.checkPermission(player, Permissions.COMMAND_STATUS)) {
                     player.sendMessage("§e" + player.getName() + "§7, your current account balance is §a" + economy.getBalance(player));
                 }
 
-                if(args[0].equalsIgnoreCase("pay") && this.checkPermission(player, "mcbank.pay")) {
+                if(args[0].equalsIgnoreCase("pay") && this.checkPermission(player, Permissions.COMMAND_PAY)) {
                     if (args.length == 3) {
                         @SuppressWarnings("deprecation") Player donatedPlayer = Bukkit.getServer().getPlayer(args[0]);
 
@@ -48,7 +49,7 @@ public class BankCommand implements CommandExecutor {
                             try {
                                 payAmount = Integer.parseInt(args[2]);
                             } catch (NumberFormatException exception) {
-                                player.sendMessage("§cYou have entered an amount that is not a number.");
+                                player.sendMessage(this.configManager.getError(Errors.INVALID_NUMBER));
                                 return true;
                             }
 
@@ -100,10 +101,10 @@ public class BankCommand implements CommandExecutor {
                             economy.withdrawPlayer(player, payAmount);
                             player.sendMessage("");
                         } else {
-                            player.sendMessage(configManager.getError("bigger_amount"));
+                            player.sendMessage(configManager.getError(Errors.BAD_ARGUMENT));
                         }
                     } else {
-                        player.sendMessage(configManager.getError("bad_argument"));
+                        player.sendMessage(configManager.getError(Errors.BIGGER_AMOUNT));
                     }
                 }
             }
