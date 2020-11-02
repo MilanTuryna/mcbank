@@ -18,8 +18,13 @@ public class ConfigManager {
     public String getCurrency() {
         return this.getString("currencySymbol");
     }
+
     public String getError(String error) {
         return this.getString("errorMessages." + error);
+    }
+
+    public String getMessage(String message) {
+        return this.getString("messages." + message);
     }
 
     public FileConfiguration getConfig() {

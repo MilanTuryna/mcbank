@@ -22,7 +22,7 @@ public class Main extends JavaPlugin implements Listener {
             this.log("Plugin was enabled and VaultAPI is perfectly working.");
             this.vaultActive = true;
 
-            this.getCommand("mcbank").setExecutor(new BankCommand(configManager, vault));
+            this.getCommand("mcbank").setExecutor(new BankCommand(this, configManager, vault));
             this.getServer().getPluginManager().registerEvents(new PlayerListener(configManager, vault), this);
         } else {
             this.log("§cVault not found, plugin will be disabled.");

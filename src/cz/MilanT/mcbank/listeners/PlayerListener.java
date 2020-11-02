@@ -1,5 +1,6 @@
 package cz.MilanT.mcbank.listeners;
 
+import cz.MilanT.mcbank.constants.Variables;
 import cz.MilanT.mcbank.libraries.Vault;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import net.milkbowl.vault.economy.Economy;
@@ -27,13 +28,13 @@ public class PlayerListener implements Listener {
 
         double actualDeposit = configuration.getDouble("events.joinEvent.deposit");
         double actualWithdraw = configuration.getDouble("events.joinEvent.withdraw");
-        String currencySymbol = this.configManager.getString("currencySymbol");
 
         player.sendMessage(this.configManager.getString("events.joinEvent.message")
-                .replace("%player%", player.getName())
-                .replace("%balance%", economy.getBalance(player) + currencySymbol)
-                .replace("%actualDeposit%", actualDeposit + currencySymbol)
-                .replace("%actualWithdraw%", actualWithdraw + currencySymbol));
+                .replace(Variables.PLAYER, player.getName())
+                .replace(Variables.CURRENCY_SYMBOL, this.configManager.getCurrency())
+                .replace(Variables.BALANCE, String.valueOf(economy.getBalance(player)))
+                .replace(Variables.ACTUAL_DEPOSIT, String.valueOf(actualDeposit))
+                .replace(Variables.ACTUAL_WITHDRAW, String.valueOf(actualWithdraw)));
 
         economy.depositPlayer(player, actualDeposit);
         economy.withdrawPlayer(player, actualWithdraw);

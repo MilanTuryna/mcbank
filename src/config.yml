@@ -7,6 +7,7 @@
 #
 # JOIN-EVENT MESSAGE VARIABLES: %player%, %balance%, %actualDeposit%, %actualWithdraw%s
 #
+# messages.sucessfully_sent : player,donatedplayer,currencysymbol,balance,payamount
 
 prefix: ""
 currencySymbol: "$"
@@ -24,5 +25,11 @@ errorMessages:
   bigger_amount: "&cYou have entered an amount, which is bigger than your total account balance."
   bad_argument: "&cBad argument! &7Write &a/mcbank&7 for help with bank account"
   no_console: "&cThis command is enabled only for players!"
+  pay_to_offline: "&cYou want to send money to player which is not online."
+  no_permission: "&&You don't have permission for bank command."
 messages:
-  thanks_to_sponsor: ""
+  status_command: "&e%player%&7, your current account balance is &a%balance%%currencySymbol%"
+  received_from_player: "&7You received &a%payAmount%&7 from &e%player%"
+  successfully_sent: "&7You successfully sent &c%payAmount%%currencySymbol%&7 to &e%donatedPlayer%&7, and now you have &a%balance%"
+  pm_thanks_to_sponsor: ""
+  bc_thanks_to_sponsor: ""
