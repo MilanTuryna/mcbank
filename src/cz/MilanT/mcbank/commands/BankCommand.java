@@ -30,7 +30,7 @@ public class BankCommand implements CommandExecutor {
 
             if(args.length > 1) {
                 Economy economy = vault.getEcon();
-                if(args[0].equalsIgnoreCase("status")) {
+                if(args[0].equalsIgnoreCase("status") && this.checkPermission(player, "mcbank.status")) {
                     player.sendMessage("§e" + player.getName() + "§7, your current account balance is §a" + economy.getBalance(player));
                 }
             }
@@ -43,6 +43,13 @@ public class BankCommand implements CommandExecutor {
 
     public ConfigManager getConfigManager() {
         return configManager;
+    }
+
+    /**
+     * Checking if player has permission if playerPermissions boolean configured to true in configuratiuon
+     */
+    public boolean checkPermission(Player player, String node) {
+        return !this.configManager.getConfig().getBoolean("playerPermissions") || player.hasPermission(node);
     }
 
     public Vault getVault() {
