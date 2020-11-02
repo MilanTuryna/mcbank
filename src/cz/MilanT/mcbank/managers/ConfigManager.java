@@ -16,7 +16,7 @@ public class ConfigManager {
     }
 
     public String getCurrency() {
-        return this.getString("currency");
+        return this.getString("currencySymbol");
     }
 
     public FileConfiguration getConfig() {

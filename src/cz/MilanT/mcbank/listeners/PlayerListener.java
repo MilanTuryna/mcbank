@@ -27,12 +27,13 @@ public class PlayerListener implements Listener {
 
         double actualDeposit = configuration.getDouble("events.joinEvent.deposit");
         double actualWithdraw = configuration.getDouble("events.joinEvent.withdraw");
+        String currencySymbol = this.configManager.getString("currencySymbol");
 
         player.sendMessage(this.configManager.getString("events.joinEvent.message")
                 .replace("%player%", player.getName())
-                .replace("%balance%", String.valueOf(economy.getBalance(player)))
-                .replace("%actualDeposit%", String.valueOf(actualDeposit))
-                .replace("%actualWithdraw%", String.valueOf(actualWithdraw)));
+                .replace("%balance%", economy.getBalance(player) + currencySymbol)
+                .replace("%actualDeposit%", actualDeposit + currencySymbol)
+                .replace("%actualWithdraw%", actualWithdraw + currencySymbol));
 
         economy.depositPlayer(player, actualDeposit);
         economy.withdrawPlayer(player, actualWithdraw);
