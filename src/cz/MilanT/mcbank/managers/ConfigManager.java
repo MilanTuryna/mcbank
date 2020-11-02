@@ -18,6 +18,9 @@ public class ConfigManager {
     public String getCurrency() {
         return this.getString("currencySymbol");
     }
+    public String getError(String error) {
+        return this.getString("errorMessages." + error);
+    }
 
     public FileConfiguration getConfig() {
         return this.plugin.getConfig();

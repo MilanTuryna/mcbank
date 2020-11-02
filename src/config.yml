@@ -10,6 +10,7 @@
 
 prefix: ""
 currencySymbol: "$"
+
 events:
   joinEvent:
     message: "Hello %player%! amount: %balance%, deposit: %actualDeposit%, withdraw: %actualWithdraw%"
@@ -18,3 +19,8 @@ events:
   quitEvent:
     withdraw: 0
     deposit: 0
+errorMessages:
+  bigger_amount: "&cYou have entered an amount, which is bigger than your total account balance."
+  bad_argument: "&cBad argument! &7Write &a/mcbank&7 for help with bank account"
+messages:
+  thanks_to_sponsor: ""
