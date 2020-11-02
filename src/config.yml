@@ -1,0 +1,10 @@
+#
+# MyBank - A minecraft plugin for complex virtual bank and economy
+#
+# Developed by MilanT:
+#    https://github.com/MilanTuryna
+#    https://turyna.eu/
+#
+
+prefix: ""
+currencySymbol: "$"
