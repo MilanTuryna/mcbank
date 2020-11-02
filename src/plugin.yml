@@ -1,0 +1,5 @@
+name: McBank
+main: cz.MilanT.mcbank.Main
+version: 1.0
+softdepend: [Vault]
+author: MilanT

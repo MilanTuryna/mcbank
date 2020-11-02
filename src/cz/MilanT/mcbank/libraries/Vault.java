@@ -4,11 +4,11 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class VaultAPI {
+public class Vault {
     private final JavaPlugin plugin;
     private Economy econ;
 
-    public VaultAPI(JavaPlugin plugin) {
+    public Vault(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
