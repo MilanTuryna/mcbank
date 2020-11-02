@@ -18,4 +18,3 @@ events:
   quitEvent:
     withdraw: 0
     deposit: 0
-
