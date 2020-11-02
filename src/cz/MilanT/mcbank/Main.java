@@ -25,7 +25,8 @@ public class Main extends JavaPlugin implements Listener {
             this.getCommand("mcbank").setExecutor(new BankCommand(configManager, vault));
             this.getServer().getPluginManager().registerEvents(new PlayerListener(configManager, vault), this);
         } else {
-            this.log("Plugin will be disabled, because Vault isn't working.");
+            this.log("§cVault not found, plugin will be disabled.");
+            this.log("§aFor good work is needed: §ehttps://github.com/MilkBowl/Vault");
             this.getPluginLoader().disablePlugin(this);
         }
     }
