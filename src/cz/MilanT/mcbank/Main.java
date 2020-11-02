@@ -1,5 +1,6 @@
 package cz.MilanT.mcbank;
 
+import cz.MilanT.mcbank.commands.AdminBankCommand;
 import cz.MilanT.mcbank.commands.BankCommand;
 import cz.MilanT.mcbank.libraries.Vault;
 import cz.MilanT.mcbank.listeners.PlayerListener;
@@ -23,6 +24,8 @@ public class Main extends JavaPlugin implements Listener {
             this.vaultActive = true;
 
             this.getCommand("mcbank").setExecutor(new BankCommand(this, configManager, vault));
+            this.getCommand("adminbank").setExecutor(new AdminBankCommand(configManager, vault));
+
             this.getServer().getPluginManager().registerEvents(new PlayerListener(configManager, vault), this);
         } else {
             this.log("§cVault not found, plugin will be disabled.");
