@@ -108,7 +108,7 @@ public class BankCommand implements CommandExecutor {
                 }
             }
         } else {
-            sender.sendMessage("§cThis command is enabled only for players!");
+            sender.sendMessage(configManager.getError(Errors.NO_CONSOLE));
         }
 
         return true;
