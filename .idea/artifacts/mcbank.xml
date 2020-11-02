@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="mcbank">
+    <output-path>$PROJECT_DIR$/out/artifacts/mcbank</output-path>
+    <root id="archive" name="mcbank.jar" />
+  </artifact>
+</component>
