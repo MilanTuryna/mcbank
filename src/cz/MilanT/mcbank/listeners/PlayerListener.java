@@ -38,6 +38,7 @@ public class PlayerListener implements Listener {
 
         double actualDeposit = configuration.getDouble("events.joinEvent.deposit");
         double actualWithdraw = configuration.getDouble("events.join" + "Event.withdraw");
+        double playerBalance = economyAPI.getBalance(player);
 
         if(actualDeposit < 0 || actualWithdraw < 0) {
             actualDeposit = 0;
@@ -49,12 +50,12 @@ public class PlayerListener implements Listener {
         player.sendMessage(this.configManager.getString("events.joinEvent.message")
                 .replace(Variable.PLAYER, player.getName())
                 .replace(Variable.CURRENCY_SYMBOL, this.configManager.getCurrency())
-                .replace(Variable.BALANCE, String.valueOf(economyAPI.getBalance(player)))
+                .replace(Variable.BALANCE, String.valueOf(playerBalance)
                 .replace(Variable.ACTUAL_DEPOSIT, String.valueOf(actualDeposit))
-                .replace(Variable.ACTUAL_WITHDRAW, String.valueOf(actualWithdraw)));
+                .replace(Variable.ACTUAL_WITHDRAW, String.valueOf(actualWithdraw))));
 
         economyAPI.depositPlayer(player, actualDeposit);
-        economyAPI.withdrawPlayer(player, actualWithdraw);
+        if(playerBalance >= actualWithdraw) economyAPI.withdrawPlayer(player, actualWithdraw);
     }
 
     public void onPlayerQuit(PlayerQuitEvent event) {
