@@ -29,7 +29,7 @@ public class AdminBankCommand implements CommandExecutor {
                 sender.sendMessage("/adminbank notifyrelations <true|false> (now: " + notifyrelations + ")");
             }
 
-            if(args.length > 1) {
+            if(args.length > 0) {
                 if(args[0].equalsIgnoreCase("notifyrelations")) {
                     if(args.length == 2) {
                         configManager.getConfig().set("notifyrelations", Boolean.parseBoolean(args[1]));
