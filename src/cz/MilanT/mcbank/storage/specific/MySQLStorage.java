@@ -4,6 +4,8 @@ import cz.MilanT.mcbank.db.mysql.Database;
 import cz.MilanT.mcbank.storage.IStorage;
 import cz.MilanT.mcbank.system.player.Account;
 
+import java.io.IOException;
+
 public class MySQLStorage implements IStorage {
     private final Database database;
 
@@ -31,6 +33,12 @@ public class MySQLStorage implements IStorage {
     public void setPlayerBalance(String name, double balance) {
 
     }
+
+    @Override
+    public void onPlayerQuit(String nick) throws IOException {
+
+    }
+
 
     @Override
     public void onDisable() {
