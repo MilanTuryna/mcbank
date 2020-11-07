@@ -55,8 +55,6 @@ public class YAMLStorage implements IStorage {
         fileConfiguration.set("nickname", nickname);
         fileConfiguration.set("balance", account.getBalance());
 
-
-
         return true;
     }
 
