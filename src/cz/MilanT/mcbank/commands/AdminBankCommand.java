@@ -1,7 +1,7 @@
 package cz.MilanT.mcbank.commands;
 
-import cz.MilanT.mcbank.constants.Errors;
-import cz.MilanT.mcbank.constants.Permissions;
+import cz.MilanT.mcbank.constants.Error;
+import cz.MilanT.mcbank.constants.Permission;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.vault.EconomyAPI;
 import org.bukkit.command.Command;
@@ -19,7 +19,7 @@ public class AdminBankCommand implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         /* Used CommandSender instead of Player, because admin commands is will be working for console. */
-        if(this.checkPermission(sender, Permissions.ADMIN)) {
+        if(this.checkPermission(sender, Permission.ADMIN)) {
             if(args.length == 0) {
                 boolean notifyrelations = configManager.getConfig().getBoolean("notifyrelations");
 
@@ -42,7 +42,7 @@ public class AdminBankCommand implements CommandExecutor {
                 }
             }
         } else {
-            sender.sendMessage(configManager.getError(Errors.NO_PERMISSION));
+            sender.sendMessage(configManager.getError(Error.NO_PERMISSION));
         }
 
         return true;

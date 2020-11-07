@@ -1,7 +1,7 @@
 package cz.MilanT.mcbank.constants;
 
-public final class Variables {
-    private Variables() { }
+public final class Variable {
+    private Variable() { }
 
     public static final String ACTUAL_DEPOSIT = "%actualDeposit%";
     public static final String ACTUAL_WITHDRAW = "%actualWithdraw%";

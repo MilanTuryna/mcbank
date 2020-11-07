@@ -1,6 +1,6 @@
 package cz.MilanT.mcbank;
 
-import cz.MilanT.mcbank.db.Database;
+import cz.MilanT.mcbank.db.mysql.Database;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.commands.AdminBankCommand;
 import cz.MilanT.mcbank.commands.BankCommand;
@@ -45,7 +45,7 @@ public class Main extends JavaPlugin implements Listener {
             this.getServer().getPluginManager().registerEvents(new PlayerListener(configManager, economyAPI), this);
         } catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            this.log("§cAn error occurred while connecting to the database, McBank plugin will be disabled. §a§l>> Check logs for solution.");
+            this.log("§cAn error occurred while connecting to the database, McBank plugin will be disabled. §a§l>> Check logs for get solution.");
             this.getPluginLoader().disablePlugin(this);
         }
     }

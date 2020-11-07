@@ -1,4 +1,4 @@
-package cz.MilanT.mcbank.db;
+package cz.MilanT.mcbank.db.mysql;
 
 /* http://www.itnetwork.cz */
 

@@ -1,7 +1,7 @@
 package cz.MilanT.mcbank.constants;
 
-public final class Permissions {
-    private Permissions() { }
+public final class Permission {
+    private Permission() { }
 
     public static final String ADMIN = "mcbank.admin";
 

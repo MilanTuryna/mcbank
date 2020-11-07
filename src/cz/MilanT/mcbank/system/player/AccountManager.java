@@ -1,6 +1,6 @@
 package cz.MilanT.mcbank.system.player;
 
-import cz.MilanT.mcbank.db.Database;
+import cz.MilanT.mcbank.db.mysql.Database;
 
 public class AccountManager {
     private final Database database;

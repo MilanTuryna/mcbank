@@ -1,9 +1,9 @@
 package cz.MilanT.mcbank.commands;
 
-import cz.MilanT.mcbank.constants.Errors;
-import cz.MilanT.mcbank.constants.Messages;
-import cz.MilanT.mcbank.constants.Permissions;
-import cz.MilanT.mcbank.constants.Variables;
+import cz.MilanT.mcbank.constants.Error;
+import cz.MilanT.mcbank.constants.Message;
+import cz.MilanT.mcbank.constants.Permission;
+import cz.MilanT.mcbank.constants.Variable;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.vault.EconomyAPI;
 import org.bukkit.command.Command;
@@ -28,7 +28,7 @@ public class BankCommand implements CommandExecutor {
         if(sender instanceof Player) {
             Player player = (Player)sender;
 
-            if(this.checkPermission(player, Permissions.COMMAND_HELP)) {
+            if(this.checkPermission(player, Permission.COMMAND_HELP)) {
                 if(args.length == 0) {
                     player.sendMessage("/mcbank");
                     player.sendMessage("/mcbank status");
@@ -39,20 +39,20 @@ public class BankCommand implements CommandExecutor {
 
                 if(args.length > 1) {
                     if(args[0].equalsIgnoreCase("status")) {
-                        if(!this.checkPermission(player, Permissions.COMMAND_STATUS)) {
-                            player.sendMessage(configManager.getError(Errors.NO_PERMISSION));
+                        if(!this.checkPermission(player, Permission.COMMAND_STATUS)) {
+                            player.sendMessage(configManager.getError(Error.NO_PERMISSION));
                             return true;
                         }
 
-                        player.sendMessage(configManager.getMessage(Messages.STATUS_COMMAND)
-                                .replace(Variables.PLAYER, player.getName())
-                                .replace(Variables.CURRENCY_SYMBOL, configManager.getCurrency())
-                                .replace(Variables.BALANCE, String.valueOf(economyAPI.getBalance(player))));
+                        player.sendMessage(configManager.getMessage(Message.STATUS_COMMAND)
+                                .replace(Variable.PLAYER, player.getName())
+                                .replace(Variable.CURRENCY_SYMBOL, configManager.getCurrency())
+                                .replace(Variable.BALANCE, String.valueOf(economyAPI.getBalance(player))));
                     }
 
                     if(args[0].equalsIgnoreCase("pay")) {
-                        if(!this.checkPermission(player, Permissions.COMMAND_PAY)) {
-                            player.sendMessage(configManager.getError(Errors.NO_PERMISSION));
+                        if(!this.checkPermission(player, Permission.COMMAND_PAY)) {
+                            player.sendMessage(configManager.getError(Error.NO_PERMISSION));
                             return true;
                         }
 
@@ -64,7 +64,7 @@ public class BankCommand implements CommandExecutor {
                                 try {
                                     payAmount = Integer.parseInt(args[2]);
                                 } catch (NumberFormatException exception) {
-                                    player.sendMessage(this.configManager.getError(Errors.INVALID_NUMBER));
+                                    player.sendMessage(this.configManager.getError(Error.INVALID_NUMBER));
                                     return true;
                                 }
 
@@ -75,34 +75,34 @@ public class BankCommand implements CommandExecutor {
                                     economyAPI.withdrawPlayer(player, payAmount);
                                     economyAPI.depositPlayer(donatedPlayer, payAmount);
 
-                                    player.sendMessage(configManager.getMessage(Messages.SUCCESSFULLY_SENT)
-                                            .replace(Variables.PLAYER, player.getName())
-                                            .replace(Variables.DONATED_PLAYER, donatedPlayer.getName())
-                                            .replace(Variables.CURRENCY_SYMBOL, this.configManager.getCurrency())
-                                            .replace(Variables.BALANCE, String.valueOf(playerBalance))
-                                            .replace(Variables.PAY_AMOUNT, String.valueOf(payAmount)));
-                                    donatedPlayer.sendMessage(configManager.getMessage(Messages.RECEIVED_FROM_PLAYER)
-                                            .replace(Variables.DONATED_PLAYER, donatedPlayer.getName())
-                                            .replace(Variables.CURRENCY_SYMBOL, this.configManager.getCurrency())
-                                            .replace(Variables.DONATED_PLAYER_BALANCE, String.valueOf(donatedPlayerBalance))
-                                            .replace(Variables.PAY_AMOUNT, String.valueOf(payAmount))
-                                            .replace(Variables.PLAYER, player.getName()));
+                                    player.sendMessage(configManager.getMessage(Message.SUCCESSFULLY_SENT)
+                                            .replace(Variable.PLAYER, player.getName())
+                                            .replace(Variable.DONATED_PLAYER, donatedPlayer.getName())
+                                            .replace(Variable.CURRENCY_SYMBOL, this.configManager.getCurrency())
+                                            .replace(Variable.BALANCE, String.valueOf(playerBalance))
+                                            .replace(Variable.PAY_AMOUNT, String.valueOf(payAmount)));
+                                    donatedPlayer.sendMessage(configManager.getMessage(Message.RECEIVED_FROM_PLAYER)
+                                            .replace(Variable.DONATED_PLAYER, donatedPlayer.getName())
+                                            .replace(Variable.CURRENCY_SYMBOL, this.configManager.getCurrency())
+                                            .replace(Variable.DONATED_PLAYER_BALANCE, String.valueOf(donatedPlayerBalance))
+                                            .replace(Variable.PAY_AMOUNT, String.valueOf(payAmount))
+                                            .replace(Variable.PLAYER, player.getName()));
                                 } else {
-                                    player.sendMessage(configManager.getError(Errors.BIGGER_AMOUNT)
-                                            .replace(Variables.CURRENCY_SYMBOL, String.valueOf(configManager.getCurrency()))
-                                            .replace(Variables.PAY_AMOUNT, String.valueOf(payAmount))
-                                            .replace(Variables.BALANCE, String.valueOf(playerBalance))
+                                    player.sendMessage(configManager.getError(Error.BIGGER_AMOUNT)
+                                            .replace(Variable.CURRENCY_SYMBOL, String.valueOf(configManager.getCurrency()))
+                                            .replace(Variable.PAY_AMOUNT, String.valueOf(payAmount))
+                                            .replace(Variable.BALANCE, String.valueOf(playerBalance))
                                     );
                                 }
                             } else {
-                                player.sendMessage(configManager.getError(Errors.PAY_TO_OFFLINE));
+                                player.sendMessage(configManager.getError(Error.PAY_TO_OFFLINE));
                             }
                         } else {
-                            player.sendMessage(configManager.getError(Errors.BAD_ARGUMENT));
+                            player.sendMessage(configManager.getError(Error.BAD_ARGUMENT));
                         }
                     } else if(args[0].equalsIgnoreCase("sponsor")) {
-                        if(!this.checkPermission(player, Permissions.COMMAND_SPONSOR)) {
-                            player.sendMessage(configManager.getError(Errors.NO_PERMISSION));
+                        if(!this.checkPermission(player, Permission.COMMAND_SPONSOR)) {
+                            player.sendMessage(configManager.getError(Error.NO_PERMISSION));
                             return true;
                         }
 
@@ -111,7 +111,7 @@ public class BankCommand implements CommandExecutor {
                             try {
                                 payAmount = Integer.parseInt(args[1]);
                             } catch (NumberFormatException exception) {
-                                player.sendMessage(this.configManager.getError(Errors.INVALID_NUMBER));
+                                player.sendMessage(this.configManager.getError(Error.INVALID_NUMBER));
                                 return true;
                             }
 
@@ -119,27 +119,27 @@ public class BankCommand implements CommandExecutor {
 
                             if(playerBalance >= payAmount) {
                                 economyAPI.withdrawPlayer(player, payAmount);
-                                player.sendMessage(this.configManager.getMessage(Messages.PM_THANKS_TO_SPONSOR));
-                                plugin.getServer().broadcastMessage(this.configManager.getMessage(Messages.BC_THANKS_TO_SPONSOR));
+                                player.sendMessage(this.configManager.getMessage(Message.PM_THANKS_TO_SPONSOR));
+                                plugin.getServer().broadcastMessage(this.configManager.getMessage(Message.BC_THANKS_TO_SPONSOR));
                             } else {
-                                player.sendMessage(configManager.getError(Errors.BIGGER_AMOUNT)
-                                        .replace(Variables.CURRENCY_SYMBOL, String.valueOf(configManager.getCurrency()))
-                                        .replace(Variables.PAY_AMOUNT, String.valueOf(payAmount))
-                                        .replace(Variables.BALANCE, String.valueOf(playerBalance))
+                                player.sendMessage(configManager.getError(Error.BIGGER_AMOUNT)
+                                        .replace(Variable.CURRENCY_SYMBOL, String.valueOf(configManager.getCurrency()))
+                                        .replace(Variable.PAY_AMOUNT, String.valueOf(payAmount))
+                                        .replace(Variable.BALANCE, String.valueOf(playerBalance))
                                 );
                             }
                         } else {
-                            player.sendMessage(configManager.getError(Errors.BAD_ARGUMENT));
+                            player.sendMessage(configManager.getError(Error.BAD_ARGUMENT));
                         }
                     } else {
                         //probably bad arugment
                     }
                 }
             } else {
-                player.sendMessage(configManager.getError(Errors.NO_PERMISSION));
+                player.sendMessage(configManager.getError(Error.NO_PERMISSION));
             }
         } else {
-            sender.sendMessage(configManager.getError(Errors.NO_CONSOLE));
+            sender.sendMessage(configManager.getError(Error.NO_CONSOLE));
         }
 
         return true;

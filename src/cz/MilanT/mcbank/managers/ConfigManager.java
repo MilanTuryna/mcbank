@@ -1,6 +1,6 @@
 package cz.MilanT.mcbank.managers;
 
-import cz.MilanT.mcbank.db.Database;
+import cz.MilanT.mcbank.db.mysql.Database;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;

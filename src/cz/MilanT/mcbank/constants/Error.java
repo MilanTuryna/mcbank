@@ -1,7 +1,7 @@
 package cz.MilanT.mcbank.constants;
 
-public final class Errors {
-    private Errors() { }
+public final class Error {
+    private Error() { }
 
     public static final String BAD_ARGUMENT = "bad_argument";
     public static final String BIGGER_AMOUNT = "bigger_amount";

@@ -1,6 +1,6 @@
 package cz.MilanT.mcbank.listeners;
 
-import cz.MilanT.mcbank.constants.Variables;
+import cz.MilanT.mcbank.constants.Variable;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.vault.EconomyAPI;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,11 +28,11 @@ public class PlayerListener implements Listener {
         double actualWithdraw = configuration.getDouble("events.joinEvent.withdraw");
 
         player.sendMessage(this.configManager.getString("events.joinEvent.message")
-                .replace(Variables.PLAYER, player.getName())
-                .replace(Variables.CURRENCY_SYMBOL, this.configManager.getCurrency())
-                .replace(Variables.BALANCE, String.valueOf(economyAPI.getBalance(player)))
-                .replace(Variables.ACTUAL_DEPOSIT, String.valueOf(actualDeposit))
-                .replace(Variables.ACTUAL_WITHDRAW, String.valueOf(actualWithdraw)));
+                .replace(Variable.PLAYER, player.getName())
+                .replace(Variable.CURRENCY_SYMBOL, this.configManager.getCurrency())
+                .replace(Variable.BALANCE, String.valueOf(economyAPI.getBalance(player)))
+                .replace(Variable.ACTUAL_DEPOSIT, String.valueOf(actualDeposit))
+                .replace(Variable.ACTUAL_WITHDRAW, String.valueOf(actualWithdraw)));
 
         economyAPI.depositPlayer(player, actualDeposit);
         economyAPI.withdrawPlayer(player, actualWithdraw);

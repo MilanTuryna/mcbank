@@ -1,7 +1,7 @@
 package cz.MilanT.mcbank.constants;
 
-public final class Messages {
-    private Messages() { }
+public final class Message {
+    private Message() { }
 
     public static final String PM_THANKS_TO_SPONSOR = "mcbank.help";
     public static final String BC_THANKS_TO_SPONSOR = "bc_thanks_to_sponsor";
