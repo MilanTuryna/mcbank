@@ -37,7 +37,7 @@ public class BankCommand implements CommandExecutor {
 
                 }
 
-                if(args.length > 1) {
+                if(args.length > 0) {
                     if(args[0].equalsIgnoreCase("status")) {
                         if(!this.checkPermission(player, Permission.COMMAND_STATUS)) {
                             player.sendMessage(configManager.getError(Error.NO_PERMISSION));
