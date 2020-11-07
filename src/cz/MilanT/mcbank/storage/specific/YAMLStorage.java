@@ -4,7 +4,6 @@ import cz.MilanT.mcbank.storage.IStorage;
 import cz.MilanT.mcbank.system.player.Account;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -54,6 +53,8 @@ public class YAMLStorage implements IStorage {
         FileConfiguration fileConfiguration = playersFilesMap.get(nickname);
         fileConfiguration.set("nickname", nickname);
         fileConfiguration.set("balance", account.getBalance());
+
+        playersFilesMap.put("nickname", fileConfiguration);
 
         return true;
     }
