@@ -5,6 +5,6 @@ public class Storage {
 
     }
 
-    private static final String MYSQL = "mysql";
-    private static final String YAML = "yaml";
+    public static final String MYSQL = "mysql";
+    public static final String YAML = "yaml";
 }
