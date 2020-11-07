@@ -24,18 +24,13 @@ public class Main extends JavaPlugin implements Listener {
         this.saveDefaultConfig();
         this.getConfig().options().copyDefaults(true);
 
+        EconomyAPI economyAPI = new EconomyAPI(this.storage);
+        Vault vault = new Vault(this, economyAPI);
+        vault.registerEconomy();
+
         try {
             this.storage = configManager.getStorage();
-
-            EconomyAPI economyAPI = new EconomyAPI(this.storage);
-            Vault vault = new Vault(this, economyAPI);
-
-            if(vault.isLoaded()) {
-                vault.registerEconomy();
-                this.log("§aVault founded! Plugin will be work with Vault :)");
-            } else {
-                this.log("§cVault not found, plugin will be work, but without VaultAPI.");
-            }
+            economyAPI.setStorage(this.storage);
 
             this.log("§aPlugin was enabled!");
 

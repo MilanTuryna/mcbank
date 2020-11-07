@@ -14,7 +14,7 @@ import java.util.List;
 
 public class EconomyAPI implements Economy {
     private final String name;
-    private final IStorage storage;
+    private IStorage storage;
 
     public EconomyAPI(IStorage storage) {
         this.storage = storage;
@@ -264,5 +264,9 @@ public class EconomyAPI implements Economy {
     @Override
     public boolean createPlayerAccount(OfflinePlayer player, String worldName) {
         return false;
+    }
+
+    public void setStorage(IStorage storage) {
+        this.storage = storage;
     }
 }
