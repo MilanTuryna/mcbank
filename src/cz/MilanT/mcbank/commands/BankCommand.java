@@ -4,8 +4,8 @@ import cz.MilanT.mcbank.constants.Errors;
 import cz.MilanT.mcbank.constants.Messages;
 import cz.MilanT.mcbank.constants.Permissions;
 import cz.MilanT.mcbank.constants.Variables;
-import cz.MilanT.mcbank.libraries.Vault;
 import cz.MilanT.mcbank.managers.ConfigManager;
+import cz.MilanT.mcbank.vault.EconomyHandler;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -16,12 +16,12 @@ import org.bukkit.plugin.Plugin;
 public class BankCommand implements CommandExecutor {
     private final Plugin plugin;
     private final ConfigManager configManager;
-    private final Vault vault;
+    private final EconomyHandler economyHandler;
 
-    public BankCommand(Plugin plugin, ConfigManager configManager, Vault vault) {
+    public BankCommand(Plugin plugin, ConfigManager configManager, EconomyHandler economyHandler) {
         this.plugin = plugin;
         this.configManager = configManager;
-        this.vault = vault;
+        this.economyHandler = economyHandler;
     }
 
     @Override
@@ -35,10 +35,11 @@ public class BankCommand implements CommandExecutor {
                     player.sendMessage("/mcbank status");
                     player.sendMessage("/mcbank sponsor <amount>");
                     player.sendMessage("/mcbank pay <player> <amount>");
+
                 }
 
                 if(args.length > 1) {
-                    Economy economy = vault.getEcon();
+                    Economy economy = economyHandler.getEcon();
                     if(args[0].equalsIgnoreCase("status")) {
                         if(!this.checkPermission(player, Permissions.COMMAND_STATUS)) {
                             player.sendMessage(configManager.getError(Errors.NO_PERMISSION));
@@ -132,6 +133,8 @@ public class BankCommand implements CommandExecutor {
                         } else {
                             player.sendMessage(configManager.getError(Errors.BAD_ARGUMENT));
                         }
+                    } else {
+                        //probably bad arugment
                     }
                 }
             } else {
@@ -155,7 +158,7 @@ public class BankCommand implements CommandExecutor {
         return !this.configManager.getConfig().getBoolean("playerPermissions") || player.hasPermission(node);
     }
 
-    public Vault getVault() {
-        return vault;
+    public EconomyHandler getEconomyHandler() {
+        return economyHandler;
     }
 }
