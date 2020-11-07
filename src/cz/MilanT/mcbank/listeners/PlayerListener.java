@@ -68,8 +68,17 @@ public class PlayerListener implements Listener {
             exception.printStackTrace();
             plugin.getServer().getConsoleSender().sendMessage("§cUnable to save player data file: " + player.getName() + ".yml");
         }
+
+        double withdrawAmount = configuration.getDouble("events.quitEvent.withdraw");
+
+        if(withdrawAmount < 0) {
+            withdrawAmount = 0;
+
+            plugin.getServer().getConsoleSender().sendMessage("§cDon't use negatives numbers (withdraw&deposit) in config.yml. Withdraw and Deposit amount will be set to 0");
+        }
+
         economyAPI.depositPlayer(player, configuration.getDouble("events.quitEvent.deposit"));
-        economyAPI.withdrawPlayer(player, configuration.getDouble("events.quitEvent.withdraw"));
+        if(economyAPI.getBalance(player) >= withdrawAmount) economyAPI.withdrawPlayer(player, configuration.getDouble("events.quitEvent.withdraw"));
     }
 
     public EconomyAPI getEconomyAPI() {
