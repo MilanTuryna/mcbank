@@ -4,6 +4,7 @@ import cz.MilanT.mcbank.constants.Variable;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.storage.IStorage;
 import cz.MilanT.mcbank.vault.EconomyAPI;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,10 +33,18 @@ public class PlayerListener implements Listener {
         economyAPI.createPlayerAccount(event.getPlayer());
 
         Player player = event.getPlayer();
+        ConsoleCommandSender consoleCommandSender = this.plugin.getServer().getConsoleSender();
         FileConfiguration configuration = this.configManager.getConfig();
 
         double actualDeposit = configuration.getDouble("events.joinEvent.deposit");
-        double actualWithdraw = configuration.getDouble("events.joinEvent.withdraw");
+        double actualWithdraw = configuration.getDouble("events.join" + "Event.withdraw");
+
+        if(actualDeposit < 0 || actualWithdraw < 0) {
+            actualDeposit = 0;
+            actualWithdraw = 0;
+
+            consoleCommandSender.sendMessage("§cDon't use negatives numbers (withdraw&deposit) in config.yml. Withdraw and Deposit amount will be set to 0");
+        }
 
         player.sendMessage(this.configManager.getString("events.joinEvent.message")
                 .replace(Variable.PLAYER, player.getName())
