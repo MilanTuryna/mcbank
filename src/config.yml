@@ -11,6 +11,7 @@
 
 prefix: ""
 currencySymbol: "$"
+playerPermissions: false
 notifyRelations: false
 storage:
   active: "yaml"
