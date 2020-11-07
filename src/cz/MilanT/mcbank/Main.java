@@ -24,13 +24,12 @@ public class Main extends JavaPlugin implements Listener {
         this.saveDefaultConfig();
         this.getConfig().options().copyDefaults(true);
 
-        EconomyAPI economyAPI = new EconomyAPI(this.storage);
-        Vault vault = new Vault(this, economyAPI);
-        vault.registerEconomy();
-
         try {
             this.storage = configManager.getStorage();
-            economyAPI.setStorage(this.storage);
+            EconomyAPI economyAPI = new EconomyAPI(this.storage);
+
+            Vault vault = new Vault(this, economyAPI);
+            vault.registerEconomy();
 
             this.log("§aPlugin was enabled!");
 
