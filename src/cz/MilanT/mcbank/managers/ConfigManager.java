@@ -1,11 +1,18 @@
 package cz.MilanT.mcbank.managers;
 
+import cz.MilanT.mcbank.constants.Storage;
 import cz.MilanT.mcbank.db.mysql.Database;
+import cz.MilanT.mcbank.storage.specific.MySQLStorage;
+import cz.MilanT.mcbank.storage.specific.YAMLStorage;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
+import cz.MilanT.mcbank.storage.IStorage;
 
+import java.io.IOException;
 import java.sql.SQLException;
+
 
 public class ConfigManager {
     private final Plugin plugin;
@@ -33,12 +40,18 @@ public class ConfigManager {
     public FileConfiguration getConfig() {
         return this.plugin.getConfig();
     }
-    public Database getDatabase() throws SQLException {
-        String db = this.getString("mysql.db");
-        String name = this.getString("mysql.name");
-        String password = this.getString("mysql.password");
+    public IStorage getStorage() throws SQLException, IOException, InvalidConfigurationException {
+        String activatedStorage = this.getString("storage.active");
+        if(activatedStorage.equalsIgnoreCase(Storage.MYSQL)) {
+            String db = this.getString("storage.mysql.db");
+            String name = this.getString("storage.mysql.name");
+            String password = this.getString("storage.mysql.password");
 
-        return new Database(db, name, password);
+            Database database = new Database(db, name, password);
+            return new MySQLStorage(database);
+        }
+
+        return new YAMLStorage(this.plugin);
     }
 
     public Plugin getPlugin() {
