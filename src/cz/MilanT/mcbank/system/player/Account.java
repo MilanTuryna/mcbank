@@ -1,24 +1,19 @@
 package cz.MilanT.mcbank.system.player;
 
-import org.bukkit.entity.Player;
-
-/**
- * Class for better manipulation with Accounts from AccountManager
- */
 public class Account {
-    private final Player player;
-    private final AccountManager accountManager;
+    private final String nickname;
+    private final double balance;
 
-    public Account(Player player, AccountManager accountManager) {
-        this.player = player;
-        this.accountManager = accountManager;
+    public Account(String nickname, double balance) {
+        this.nickname = nickname;
+        this.balance = balance;
     }
 
-    public AccountManager getAccountManager() {
-        return accountManager;
+    public String getNickname() {
+        return nickname;
     }
 
-    public Player getPlayer() {
-        return player;
+    public double getBalance() {
+        return this.balance;
     }
 }
