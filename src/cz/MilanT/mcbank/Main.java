@@ -45,7 +45,7 @@ public class Main extends JavaPlugin implements Listener {
             this.getServer().getPluginManager().registerEvents(new PlayerListener(configManager, economyAPI), this);
         } catch(SQLException sqlException) {
             sqlException.printStackTrace();
-            this.log("§cAn error occurred while connecting to the database, McBank plugin will be disabled. &a&l>> Check logs for solution.");
+            this.log("§cAn error occurred while connecting to the database, McBank plugin will be disabled. §a§l>> Check logs for solution.");
             this.getPluginLoader().disablePlugin(this);
         }
     }
