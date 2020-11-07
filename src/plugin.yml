@@ -4,6 +4,9 @@ version: 1.0
 softdepend: [Vault]
 author: MilanT
 commands:
+  adminbank:
+    usage: /<command>
+    description: Administration of server economy
   mcbank:
     usage: /<command>
     description: Administration of your bank account
