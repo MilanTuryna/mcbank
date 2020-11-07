@@ -8,7 +8,6 @@ import cz.MilanT.mcbank.vault.EconomyAPI;
 import cz.MilanT.mcbank.vault.Vault;
 import cz.MilanT.mcbank.listeners.PlayerListener;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
