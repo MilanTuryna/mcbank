@@ -2,6 +2,7 @@ package cz.MilanT.mcbank.listeners;
 
 import cz.MilanT.mcbank.constants.Variable;
 import cz.MilanT.mcbank.managers.ConfigManager;
+import cz.MilanT.mcbank.storage.IStorage;
 import cz.MilanT.mcbank.vault.EconomyAPI;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -9,14 +10,21 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.Plugin;
+
+import java.io.IOException;
 
 public class PlayerListener implements Listener {
+    private final Plugin plugin;
     private final ConfigManager configManager;
     private final EconomyAPI economyAPI;
+    private final IStorage storage;
 
-    public PlayerListener(ConfigManager configManager, EconomyAPI economyAPI) {
+    public PlayerListener(Plugin plugin, ConfigManager configManager, EconomyAPI economyAPI, IStorage storage) {
+        this.plugin = plugin;
         this.configManager = configManager;
         this.economyAPI = economyAPI;
+        this.storage = storage;
     }
 
     @EventHandler
@@ -44,6 +52,12 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         FileConfiguration configuration = this.configManager.getConfig();
 
+        try {
+            storage.onPlayerQuit(player.getName());
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            plugin.getServer().getConsoleSender().sendMessage("§cUnable to save player data file: " + player.getName() + ".yml");
+        }
         economyAPI.depositPlayer(player, configuration.getDouble("events.quitEvent.deposit"));
         economyAPI.withdrawPlayer(player, configuration.getDouble("events.quitEvent.withdraw"));
     }
