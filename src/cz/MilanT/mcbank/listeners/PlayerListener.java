@@ -21,6 +21,8 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        economyAPI.createPlayerAccount(event.getPlayer());
+
         Player player = event.getPlayer();
         FileConfiguration configuration = this.configManager.getConfig();
 
