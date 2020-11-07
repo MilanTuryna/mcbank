@@ -3,18 +3,18 @@ package cz.MilanT.mcbank.commands;
 import cz.MilanT.mcbank.constants.Errors;
 import cz.MilanT.mcbank.constants.Permissions;
 import cz.MilanT.mcbank.managers.ConfigManager;
-import cz.MilanT.mcbank.vault.EconomyHandler;
+import cz.MilanT.mcbank.vault.EconomyAPI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class AdminBankCommand implements CommandExecutor {
     private final ConfigManager configManager;
-    private final EconomyHandler economyHandler;
+    private final EconomyAPI economyAPI;
 
-    public AdminBankCommand(ConfigManager configManager, EconomyHandler vault) {
+    public AdminBankCommand(ConfigManager configManager, EconomyAPI economyAPI) {
         this.configManager = configManager;
-        this.economyHandler = vault;
+        this.economyAPI = economyAPI;
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -56,7 +56,7 @@ public class AdminBankCommand implements CommandExecutor {
         return configManager;
     }
 
-    public EconomyHandler getEconomyHandler() {
-        return economyHandler;
+    public EconomyAPI getEconomyAPI() {
+        return economyAPI;
     }
 }

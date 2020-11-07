@@ -5,8 +5,7 @@ import cz.MilanT.mcbank.constants.Messages;
 import cz.MilanT.mcbank.constants.Permissions;
 import cz.MilanT.mcbank.constants.Variables;
 import cz.MilanT.mcbank.managers.ConfigManager;
-import cz.MilanT.mcbank.vault.EconomyHandler;
-import net.milkbowl.vault.economy.Economy;
+import cz.MilanT.mcbank.vault.EconomyAPI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,12 +15,12 @@ import org.bukkit.plugin.Plugin;
 public class BankCommand implements CommandExecutor {
     private final Plugin plugin;
     private final ConfigManager configManager;
-    private final EconomyHandler economyHandler;
+    private final EconomyAPI economyAPI;
 
-    public BankCommand(Plugin plugin, ConfigManager configManager, EconomyHandler economyHandler) {
+    public BankCommand(Plugin plugin, ConfigManager configManager, EconomyAPI economyAPI) {
         this.plugin = plugin;
         this.configManager = configManager;
-        this.economyHandler = economyHandler;
+        this.economyAPI = economyAPI;
     }
 
     @Override
@@ -39,7 +38,6 @@ public class BankCommand implements CommandExecutor {
                 }
 
                 if(args.length > 1) {
-                    Economy economy = economyHandler.getEcon();
                     if(args[0].equalsIgnoreCase("status")) {
                         if(!this.checkPermission(player, Permissions.COMMAND_STATUS)) {
                             player.sendMessage(configManager.getError(Errors.NO_PERMISSION));
@@ -49,7 +47,7 @@ public class BankCommand implements CommandExecutor {
                         player.sendMessage(configManager.getMessage(Messages.STATUS_COMMAND)
                                 .replace(Variables.PLAYER, player.getName())
                                 .replace(Variables.CURRENCY_SYMBOL, configManager.getCurrency())
-                                .replace(Variables.BALANCE, String.valueOf(economy.getBalance(player))));
+                                .replace(Variables.BALANCE, String.valueOf(economyAPI.getBalance(player))));
                     }
 
                     if(args[0].equalsIgnoreCase("pay")) {
@@ -70,12 +68,12 @@ public class BankCommand implements CommandExecutor {
                                     return true;
                                 }
 
-                                double playerBalance = economy.getBalance(player);
-                                double donatedPlayerBalance = economy.getBalance(donatedPlayer);
+                                double playerBalance = economyAPI.getBalance(player);
+                                double donatedPlayerBalance = economyAPI.getBalance(donatedPlayer);
 
                                 if(playerBalance >= payAmount) {
-                                    economy.withdrawPlayer(player, payAmount);
-                                    economy.depositPlayer(donatedPlayer, payAmount);
+                                    economyAPI.withdrawPlayer(player, payAmount);
+                                    economyAPI.depositPlayer(donatedPlayer, payAmount);
 
                                     player.sendMessage(configManager.getMessage(Messages.SUCCESSFULLY_SENT)
                                             .replace(Variables.PLAYER, player.getName())
@@ -117,10 +115,10 @@ public class BankCommand implements CommandExecutor {
                                 return true;
                             }
 
-                            double playerBalance = economy.getBalance(player);
+                            double playerBalance = economyAPI.getBalance(player);
 
                             if(playerBalance >= payAmount) {
-                                economy.withdrawPlayer(player, payAmount);
+                                economyAPI.withdrawPlayer(player, payAmount);
                                 player.sendMessage(this.configManager.getMessage(Messages.PM_THANKS_TO_SPONSOR));
                                 plugin.getServer().broadcastMessage(this.configManager.getMessage(Messages.BC_THANKS_TO_SPONSOR));
                             } else {
@@ -147,10 +145,6 @@ public class BankCommand implements CommandExecutor {
         return true;
     }
 
-    public ConfigManager getConfigManager() {
-        return configManager;
-    }
-
     /**
      * Checking if player has permission if playerPermissions boolean configured to true in configuratiuon
      */
@@ -158,7 +152,11 @@ public class BankCommand implements CommandExecutor {
         return !this.configManager.getConfig().getBoolean("playerPermissions") || player.hasPermission(node);
     }
 
-    public EconomyHandler getEconomyHandler() {
-        return economyHandler;
+    public EconomyAPI getEconomyAPI() {
+        return economyAPI;
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManager;
     }
 }
