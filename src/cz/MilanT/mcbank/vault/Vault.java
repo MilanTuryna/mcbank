@@ -14,10 +14,6 @@ public class Vault {
         this.economy = economy;
     }
 
-    public boolean isLoaded() {
-        return this.plugin.getServer().getPluginManager().getPlugin("Vault") == null;
-    }
-
     public void registerEconomy() {
         ServicesManager servicesManager = this.plugin.getServer().getServicesManager();
         servicesManager.register(Economy.class, this.economy, this.plugin, ServicePriority.Highest);
