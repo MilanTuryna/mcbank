@@ -1,8 +1,11 @@
 package cz.MilanT.mcbank.managers;
 
+import cz.MilanT.mcbank.db.Database;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
+
+import java.sql.SQLException;
 
 public class ConfigManager {
     private final Plugin plugin;
@@ -29,6 +32,13 @@ public class ConfigManager {
 
     public FileConfiguration getConfig() {
         return this.plugin.getConfig();
+    }
+    public Database getDatabase() throws SQLException {
+        String db = this.getString("mysql.db");
+        String name = this.getString("mysql.name");
+        String password = this.getString("mysql.password");
+
+        return new Database(db, name, password);
     }
 
     public Plugin getPlugin() {
