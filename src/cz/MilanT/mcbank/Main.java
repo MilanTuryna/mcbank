@@ -36,7 +36,7 @@ public class Main extends JavaPlugin implements Listener {
             this.getCommand("mcbank").setExecutor(new BankCommand(this, configManager, economyAPI));
             this.getCommand("adminbank").setExecutor(new AdminBankCommand(configManager, economyAPI));
 
-            this.getServer().getPluginManager().registerEvents(new PlayerListener(configManager, economyAPI), this);
+            this.getServer().getPluginManager().registerEvents(new PlayerListener(this, configManager, economyAPI, storage), this);
         } catch(SQLException sqlException) {
             sqlException.printStackTrace();
             this.log("§cAn error occurred while connecting to the MySQL database, McBank plugin will be disabled. §a§l>> Check logs for get solution.");
