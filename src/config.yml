@@ -12,10 +12,12 @@
 prefix: ""
 currencySymbol: "$"
 notifyRelations: false
-mysql:
-  db: ""
-  name: ""
-  password: ""
+storage:
+  active: "yaml"
+  mysql:
+    db: ""
+    name: ""
+    password: ""
 events:
   joinEvent:
     message: "Hello %player%! amount: %balance%, deposit: %actualDeposit%, withdraw: %actualWithdraw%"
