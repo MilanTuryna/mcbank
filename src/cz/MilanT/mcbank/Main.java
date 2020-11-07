@@ -2,15 +2,13 @@ package cz.MilanT.mcbank;
 
 import cz.MilanT.mcbank.db.Database;
 import cz.MilanT.mcbank.managers.ConfigManager;
-
 import cz.MilanT.mcbank.commands.AdminBankCommand;
 import cz.MilanT.mcbank.commands.BankCommand;
-
 import cz.MilanT.mcbank.system.player.AccountManager;
 import cz.MilanT.mcbank.vault.EconomyAPI;
+import cz.MilanT.mcbank.vault.Vault;
 import cz.MilanT.mcbank.listeners.PlayerListener;
 
-import cz.MilanT.mcbank.vault.Vault;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
