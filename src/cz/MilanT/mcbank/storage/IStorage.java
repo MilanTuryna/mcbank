@@ -1,7 +1,6 @@
 package cz.MilanT.mcbank.storage;
 
 import cz.MilanT.mcbank.system.player.Account;
-import org.bukkit.entity.Player;
 
 import java.io.IOException;
 
