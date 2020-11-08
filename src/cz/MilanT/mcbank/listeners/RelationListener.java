@@ -45,12 +45,20 @@ public class RelationListener implements Listener {
     @EventHandler
     public void onAddMoneyRelation(AddMoneyRelationEvent event) {
         String administrator = event.getAdministratorName();
-        this.getOnlineAdministrators().filter(p -> p.getName().equalsIgnoreCase(administrator)).forEach(admin ->
+        this.getOnlineAdministrators().filter(p -> !p.getName().equalsIgnoreCase(administrator)).forEach(admin ->
                 admin.sendMessage(configManager.getMessage(Message.ADMIN_NOTIFY_ADDMONEY_RELATION)
                         .replace("%administrator%", event.getAdministratorName())
                         .replace("%target%", event.getTargetName())
                         .replace("%amount", String.valueOf(event.getAmount()))));
     }
 
-    public void onRemoveMoneyRelation(RemoveMoneyRelationEvent event) { }
+    @EventHandler
+    public void onRemoveMoneyRelation(RemoveMoneyRelationEvent event) {
+        String administrator = event.getAdministratorName();
+        this.getOnlineAdministrators().filter(p -> !p.getName().equalsIgnoreCase(administrator)).forEach(admin ->
+                admin.sendMessage(configManager.getMessage(Message.ADMIN_NOTIFY_REMOVEMONEY_RELATION)
+                        .replace("%administrator%", event.getAdministratorName())
+                        .replace("%target%", event.getTargetName())
+                        .replace("%amount", String.valueOf(event.getAmount()))));
+    }
 }
