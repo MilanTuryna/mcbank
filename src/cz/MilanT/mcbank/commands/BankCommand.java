@@ -82,12 +82,10 @@ public class BankCommand implements CommandExecutor {
                                     player.sendMessage(configManager.getMessage(Message.SUCCESSFULLY_SENT)
                                             .replace(Variable.PLAYER, player.getName())
                                             .replace(Variable.DONATED_PLAYER, donatedPlayer.getName())
-                                            .replace(Variable.CURRENCY_SYMBOL, this.configManager.getCurrency())
                                             .replace(Variable.BALANCE, String.valueOf(playerBalance))
                                             .replace(Variable.PAY_AMOUNT, String.valueOf(payAmount)));
                                     donatedPlayer.sendMessage(configManager.getMessage(Message.RECEIVED_FROM_PLAYER)
                                             .replace(Variable.DONATED_PLAYER, donatedPlayer.getName())
-                                            .replace(Variable.CURRENCY_SYMBOL, this.configManager.getCurrency())
                                             .replace(Variable.DONATED_PLAYER_BALANCE, String.valueOf(donatedPlayerBalance))
                                             .replace(Variable.PAY_AMOUNT, String.valueOf(payAmount))
                                             .replace(Variable.PLAYER, player.getName()));
@@ -96,9 +94,7 @@ public class BankCommand implements CommandExecutor {
                                     pluginManager.callEvent(payRelationEvent);
                                 } else {
                                     player.sendMessage(configManager.getError(Error.BIGGER_AMOUNT)
-                                            .replace(Variable.CURRENCY_SYMBOL, String.valueOf(configManager.getCurrency()))
                                             .replace(Variable.PAY_AMOUNT, String.valueOf(payAmount))
-                                            .replace(Variable.BALANCE, String.valueOf(playerBalance))
                                     );
                                 }
                             } else {

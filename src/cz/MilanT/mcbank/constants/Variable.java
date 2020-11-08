@@ -8,6 +8,8 @@ public final class Variable {
     public static final String BALANCE = "%balance%";
     public static final String PAY_AMOUNT = "%pay_amount%";
     public static final String AMOUNT = "%amount%";
+    public static final String KEY = "%key%";
+    public static final String VALUE = "%value%";
     public static final String TARGET = "%target%";
     public static final String DONATOR = "%donator%";
     public static final String ADMINISTRATOR = "%administrator%";

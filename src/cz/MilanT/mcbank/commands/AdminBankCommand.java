@@ -3,8 +3,10 @@ package cz.MilanT.mcbank.commands;
 import cz.MilanT.mcbank.constants.Error;
 import cz.MilanT.mcbank.constants.Message;
 import cz.MilanT.mcbank.constants.Permission;
+import cz.MilanT.mcbank.constants.Variable;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.system.events.admin.AddMoneyRelationEvent;
+import cz.MilanT.mcbank.system.events.admin.RemoveMoneyRelationEvent;
 import cz.MilanT.mcbank.vault.EconomyAPI;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.Command;
@@ -83,7 +85,42 @@ public class AdminBankCommand implements CommandExecutor {
                                     pluginManager.callEvent(addMoneyRelationEvent);
                                 }
                             } else {
-                                sender.sendMessage(this.configManager.getError(Error.PLAYER_ACCOUNT_NOT_FOUND));
+                                sender.sendMessage(this.configManager.getError(Error.PLAYER_ACCOUNT_NOT_FOUND).replace("%player%", playerName));
+                            }
+                        } else {
+                            sender.sendMessage(configManager.getError(Error.INVALID_NUMBER));
+                        }
+                    } else {
+                        sender.sendMessage(configManager.getError(Error.ADMIN_BAD_ARGUMENT));
+                    }
+                } else if(args[0].equalsIgnoreCase("removemoney")) {
+                    if(args.length == 3) {
+                        String playerName = args[2];
+                        int payAmount;
+                        try {
+                            payAmount = Integer.parseInt(args[2]);
+                        } catch (NumberFormatException exception) {
+                            sender.sendMessage(this.configManager.getError(Error.INVALID_NUMBER));
+                            return true;
+                        }
+
+                        if(payAmount > 0) {
+                            if(economyAPI.hasAccount(playerName)) {
+                                if(economyAPI.has(playerName, payAmount)) {
+                                    EconomyResponse economyResponse = economyAPI.withdrawPlayer(playerName, payAmount);
+                                    if(economyResponse.transactionSuccess()) {
+                                        sender.sendMessage(Message.ADMIN_SUCCESS_ADD
+                                                .replace("%target%", playerName)
+                                                .replace("%amount%", String.valueOf(payAmount)));
+                                        RemoveMoneyRelationEvent removeMoneyRelationEvent = new RemoveMoneyRelationEvent(sender.getName(), playerName, payAmount);
+                                        pluginManager.callEvent(removeMoneyRelationEvent);
+                                    }
+                                } else {
+                                    sender.sendMessage(this.configManager.getError(Error.BIGGER_AMOUNT).
+                                            replace(Variable.PAY_AMOUNT, String.valueOf(payAmount)));
+                                }
+                            } else {
+                                sender.sendMessage(this.configManager.getError(Error.PLAYER_ACCOUNT_NOT_FOUND).replace("%player%", playerName));
                             }
                         } else {
                             sender.sendMessage(configManager.getError(Error.INVALID_NUMBER));
