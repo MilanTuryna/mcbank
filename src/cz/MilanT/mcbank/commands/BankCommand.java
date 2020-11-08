@@ -5,12 +5,15 @@ import cz.MilanT.mcbank.constants.Message;
 import cz.MilanT.mcbank.constants.Permission;
 import cz.MilanT.mcbank.constants.Variable;
 import cz.MilanT.mcbank.managers.ConfigManager;
+import cz.MilanT.mcbank.system.events.PayRelationEvent;
+import cz.MilanT.mcbank.system.events.SponsorRelationEvent;
 import cz.MilanT.mcbank.vault.EconomyAPI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 
 public class BankCommand implements CommandExecutor {
     private final Plugin plugin;
@@ -27,6 +30,7 @@ public class BankCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if(sender instanceof Player) {
             Player player = (Player)sender;
+            PluginManager pluginManager = this.plugin.getServer().getPluginManager();
 
             if(this.checkPermission(player, Permission.COMMAND_HELP)) {
                 if(args.length == 0) {
@@ -87,6 +91,9 @@ public class BankCommand implements CommandExecutor {
                                             .replace(Variable.DONATED_PLAYER_BALANCE, String.valueOf(donatedPlayerBalance))
                                             .replace(Variable.PAY_AMOUNT, String.valueOf(payAmount))
                                             .replace(Variable.PLAYER, player.getName()));
+
+                                    PayRelationEvent payRelationEvent = new PayRelationEvent(player, donatedPlayer, payAmount);
+                                    pluginManager.callEvent(payRelationEvent);
                                 } else {
                                     player.sendMessage(configManager.getError(Error.BIGGER_AMOUNT)
                                             .replace(Variable.CURRENCY_SYMBOL, String.valueOf(configManager.getCurrency()))
@@ -121,6 +128,8 @@ public class BankCommand implements CommandExecutor {
                                 economyAPI.withdrawPlayer(player, payAmount);
                                 player.sendMessage(this.configManager.getMessage(Message.PM_THANKS_TO_SPONSOR));
                                 plugin.getServer().broadcastMessage(this.configManager.getMessage(Message.BC_THANKS_TO_SPONSOR));
+                                SponsorRelationEvent sponsorRelationEvent = new SponsorRelationEvent(player, payAmount);
+                                pluginManager.callEvent(sponsorRelationEvent);
                             } else {
                                 player.sendMessage(configManager.getError(Error.BIGGER_AMOUNT)
                                         .replace(Variable.CURRENCY_SYMBOL, String.valueOf(configManager.getCurrency()))
