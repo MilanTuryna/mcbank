@@ -7,6 +7,10 @@ public final class Variable {
     public static final String ACTUAL_WITHDRAW = "%actualWithdraw%";
     public static final String BALANCE = "%balance%";
     public static final String PAY_AMOUNT = "%pay_amount%";
+    public static final String AMOUNT = "%amount%";
+    public static final String TARGET = "%target%";
+    public static final String DONATOR = "%donator%";
+    public static final String ADMINISTRATOR = "%administrator%";
     public static final String DONATED_PLAYER = "%donated_player";
     public static final String PLAYER = "%player%";
     public static final String CURRENCY_SYMBOL = "%currencySymbol%";

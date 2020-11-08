@@ -2,6 +2,7 @@ package cz.MilanT.mcbank.listeners;
 
 import cz.MilanT.mcbank.constants.Message;
 import cz.MilanT.mcbank.constants.Permission;
+import cz.MilanT.mcbank.constants.Variable;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.system.events.admin.AddMoneyRelationEvent;
 import cz.MilanT.mcbank.system.events.admin.RemoveMoneyRelationEvent;
@@ -30,16 +31,16 @@ public class RelationListener implements Listener {
     @EventHandler
     public void onPayRelation(PayRelationEvent event) {
         this.getOnlineAdministrators().forEach(admin -> admin.sendMessage(configManager.getMessage(Message.ADMIN_NOTIFY_PAY_RELATION)
-                .replace("%donator%", event.getDonator().getName())
-                .replace("%target%", event.getTarget().getName())
-                .replace("%amount", String.valueOf(event.getAmount()))));
+                .replace(Variable.DONATOR, event.getDonator().getName())
+                .replace(Variable.TARGET, event.getTarget().getName())
+                .replace(Variable.AMOUNT, String.valueOf(event.getAmount()))));
     }
 
     @EventHandler
     public void onSponsorRelation(SponsorRelationEvent event) {
         this.getOnlineAdministrators().forEach(admin -> admin.sendMessage(configManager.getMessage(Message.ADMIN_NOTIFY_SPONSOR_RELATION)
-                .replace("%donator%", event.getSponsor().getName())
-                .replace("%amount%", String.valueOf(event.getAmount()))));
+                .replace(Variable.DONATOR, event.getSponsor().getName())
+                .replace(Variable.AMOUNT, String.valueOf(event.getAmount()))));
     }
 
     @EventHandler
@@ -47,9 +48,9 @@ public class RelationListener implements Listener {
         String administrator = event.getAdministratorName();
         this.getOnlineAdministrators().filter(p -> !p.getName().equalsIgnoreCase(administrator)).forEach(admin ->
                 admin.sendMessage(configManager.getMessage(Message.ADMIN_NOTIFY_ADDMONEY_RELATION)
-                        .replace("%administrator%", event.getAdministratorName())
-                        .replace("%target%", event.getTargetName())
-                        .replace("%amount", String.valueOf(event.getAmount()))));
+                        .replace(Variable.ADMINISTRATOR, event.getAdministratorName())
+                        .replace(Variable.TARGET, event.getTargetName())
+                        .replace(Variable.AMOUNT, String.valueOf(event.getAmount()))));
     }
 
     @EventHandler
@@ -57,8 +58,8 @@ public class RelationListener implements Listener {
         String administrator = event.getAdministratorName();
         this.getOnlineAdministrators().filter(p -> !p.getName().equalsIgnoreCase(administrator)).forEach(admin ->
                 admin.sendMessage(configManager.getMessage(Message.ADMIN_NOTIFY_REMOVEMONEY_RELATION)
-                        .replace("%administrator%", event.getAdministratorName())
-                        .replace("%target%", event.getTargetName())
-                        .replace("%amount", String.valueOf(event.getAmount()))));
+                        .replace(Variable.ADMINISTRATOR, event.getAdministratorName())
+                        .replace(Variable.TARGET, event.getTargetName())
+                        .replace(Variable.AMOUNT, String.valueOf(event.getAmount()))));
     }
 }
