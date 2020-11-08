@@ -22,7 +22,7 @@ public class ConfigManager {
     }
 
     public String getString(String string) {
-        return ChatColor.translateAlternateColorCodes('&', this.getConfig().getString(string));
+        return ChatColor.translateAlternateColorCodes('&', this.getConfig().getString(string)).replace("%currencySymbol%", this.getCurrency());
     }
 
     public String getCurrency() {
@@ -40,7 +40,7 @@ public class ConfigManager {
     public FileConfiguration getConfig() {
         return this.plugin.getConfig();
     }
-    public IStorage getStorage() throws SQLException, IOException, InvalidConfigurationException {
+    public IStorage getStorage() throws SQLException {
         String activatedStorage = this.getString("storage.active");
         if(activatedStorage.equalsIgnoreCase(Storage.MYSQL)) {
             String db = this.getString("storage.mysql.db");

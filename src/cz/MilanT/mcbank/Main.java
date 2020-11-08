@@ -1,5 +1,6 @@
 package cz.MilanT.mcbank;
 
+import cz.MilanT.mcbank.listeners.RelationListener;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.commands.AdminBankCommand;
 import cz.MilanT.mcbank.commands.BankCommand;
@@ -8,8 +9,8 @@ import cz.MilanT.mcbank.vault.EconomyAPI;
 import cz.MilanT.mcbank.vault.Vault;
 import cz.MilanT.mcbank.listeners.PlayerListener;
 
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -21,6 +22,8 @@ public class Main extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         ConfigManager configManager = new ConfigManager(this);
+        PluginManager pluginManager = this.getServer().getPluginManager();
+
         this.saveDefaultConfig();
         this.getConfig().options().copyDefaults(true);
 
@@ -32,18 +35,14 @@ public class Main extends JavaPlugin implements Listener {
             vault.registerEconomy();
 
             this.log("§aPlugin was enabled!");
-
             this.getCommand("mcbank").setExecutor(new BankCommand(this, configManager, economyAPI));
             this.getCommand("adminbank").setExecutor(new AdminBankCommand(configManager, economyAPI));
 
-            this.getServer().getPluginManager().registerEvents(new PlayerListener(this, configManager, economyAPI, storage), this);
+            pluginManager.registerEvents(new PlayerListener(this, configManager, economyAPI, storage), this);
+            pluginManager.registerEvents(new RelationListener(this, configManager), this);
         } catch(SQLException sqlException) {
             sqlException.printStackTrace();
             this.log("§cAn error occurred while connecting to the MySQL database, McBank plugin will be disabled. §a§l>> Check logs for get solution.");
-            this.getPluginLoader().disablePlugin(this);
-        } catch (IOException | InvalidConfigurationException fileException) {
-            fileException.printStackTrace();
-            this.log("§cAn error occurred while connecting to the local file database (YAML), McBank plugin will be disabled. §a§l>> Check logs for get solution.");
             this.getPluginLoader().disablePlugin(this);
         }
     }
