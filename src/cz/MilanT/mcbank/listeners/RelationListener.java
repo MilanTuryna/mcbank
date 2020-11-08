@@ -3,9 +3,10 @@ package cz.MilanT.mcbank.listeners;
 import cz.MilanT.mcbank.constants.Message;
 import cz.MilanT.mcbank.constants.Permission;
 import cz.MilanT.mcbank.managers.ConfigManager;
-import cz.MilanT.mcbank.system.events.AddMoneyRelationEvent;
-import cz.MilanT.mcbank.system.events.PayRelationEvent;
-import cz.MilanT.mcbank.system.events.SponsorRelationEvent;
+import cz.MilanT.mcbank.system.events.admin.AddMoneyRelationEvent;
+import cz.MilanT.mcbank.system.events.admin.RemoveMoneyRelationEvent;
+import cz.MilanT.mcbank.system.events.player.PayRelationEvent;
+import cz.MilanT.mcbank.system.events.player.SponsorRelationEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -50,4 +51,6 @@ public class RelationListener implements Listener {
                         .replace("%target%", event.getTargetName())
                         .replace("%amount", String.valueOf(event.getAmount()))));
     }
+
+    public void onRemoveMoneyRelation(RemoveMoneyRelationEvent event) { }
 }

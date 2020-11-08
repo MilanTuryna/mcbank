@@ -1,4 +1,4 @@
-package cz.MilanT.mcbank.system.events;
+package cz.MilanT.mcbank.system.events.player;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;

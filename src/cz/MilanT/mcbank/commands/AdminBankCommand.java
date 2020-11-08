@@ -4,7 +4,7 @@ import cz.MilanT.mcbank.constants.Error;
 import cz.MilanT.mcbank.constants.Message;
 import cz.MilanT.mcbank.constants.Permission;
 import cz.MilanT.mcbank.managers.ConfigManager;
-import cz.MilanT.mcbank.system.events.AddMoneyRelationEvent;
+import cz.MilanT.mcbank.system.events.admin.AddMoneyRelationEvent;
 import cz.MilanT.mcbank.vault.EconomyAPI;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.Command;

@@ -1,23 +1,28 @@
-package cz.MilanT.mcbank.system.events;
+package cz.MilanT.mcbank.system.events.admin;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class SponsorRelationEvent extends Event implements Cancellable {
-    private final Player sponsor;
+abstract class AdminMoneyRelationEvent extends Event implements Cancellable {
+    private final String administratorName;
+    private final String targetName;
     private final double amount;
 
     private boolean isCancelled;
 
-    public SponsorRelationEvent(Player sponsor, double amount) {
-        this.sponsor = sponsor;
+    public AdminMoneyRelationEvent(String administratorName, String targetName, double amount) {
+        this.administratorName = administratorName;
+        this.targetName = targetName;
         this.amount = amount;
     }
 
-    public Player getSponsor() {
-        return sponsor;
+    public String getAdministratorName() {
+        return administratorName;
+    }
+
+    public String getTargetName() {
+        return targetName;
     }
 
     public double getAmount() {
