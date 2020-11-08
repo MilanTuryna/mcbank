@@ -58,6 +58,8 @@ public class Main extends JavaPlugin implements Listener {
                 this.log("§cUnable to save player data files (YAML)");
             }
         }
+
+        this.saveConfig();
     }
 
     public void log(String message) {
