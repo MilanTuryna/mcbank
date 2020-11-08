@@ -39,6 +39,9 @@ public class Main extends JavaPlugin implements Listener {
             this.log("§a#            §f§lMcBank Economy            §a#");
             this.log("§a# §7A plugin for adding bank and economy §a#");
             this.log("§a# §7system to Minecraft spigot servers.  §a#");
+            this.log("§a#                                      #");
+            this.log("§a# Use §e/mcbank§7 - for players            §a#");
+            this.log("§a# Use §e/adminbank§7 - for admins          §a#");
             this.log("§a#                                      §a#");
             this.log("§a# §eDeveloped by §aMilanT                  §a#");
             this.log("§a# §fhttps://github.com/MilanTuryna       §a#");
