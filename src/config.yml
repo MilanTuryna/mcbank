@@ -31,6 +31,7 @@ errorMessages:
   invalid_number: "&cYou have entered an amount that is not a number."
   bigger_amount: "&cYou have entered an amount, which is bigger than your total account balance."
   bad_argument: "&cBad argument! &7Write &a/mcbank&7 for help with bank account"
+  admin_bad_argument: "&cBad argument! &7Write &a/adminmcbank&7 for help with bank account"
   no_console: "&cThis command is enabled only for players!"
   pay_to_offline: "&cYou want to send money to player which is not online."
   no_permission: "&&You don't have permission for bank command."

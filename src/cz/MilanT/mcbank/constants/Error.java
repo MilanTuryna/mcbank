@@ -9,4 +9,5 @@ public final class Error {
     public static final String NO_CONSOLE = "no_console";
     public static final String PAY_TO_OFFLINE = "pay_to_offline";
     public static final String NO_PERMISSION = "no_permission";
+    public static final String ADMIN_BAD_ARGUMENT = "admin_bad_argument";
 }

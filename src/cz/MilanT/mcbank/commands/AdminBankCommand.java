@@ -40,10 +40,10 @@ public class AdminBankCommand implements CommandExecutor {
                                 .replace("%value%", String.valueOf(parsedBoolean))
                         );
                     } else {
-                        sender.sendMessage("test this condition -1");
+                        sender.sendMessage(configManager.getMessage(Error.ADMIN_BAD_ARGUMENT));
                     }
                 } else {
-                    sender.sendMessage("test this condition");
+                    sender.sendMessage(configManager.getMessage(Error.ADMIN_BAD_ARGUMENT));
                 }
             }
         } else {
