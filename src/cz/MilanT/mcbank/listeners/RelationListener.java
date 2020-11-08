@@ -3,6 +3,7 @@ package cz.MilanT.mcbank.listeners;
 import cz.MilanT.mcbank.constants.Message;
 import cz.MilanT.mcbank.constants.Permission;
 import cz.MilanT.mcbank.managers.ConfigManager;
+import cz.MilanT.mcbank.system.events.AddMoneyRelationEvent;
 import cz.MilanT.mcbank.system.events.PayRelationEvent;
 import cz.MilanT.mcbank.system.events.SponsorRelationEvent;
 import org.bukkit.entity.Player;
@@ -38,5 +39,15 @@ public class RelationListener implements Listener {
         this.getOnlineAdministrators().forEach(admin -> admin.sendMessage(configManager.getMessage(Message.ADMIN_NOTIFY_SPONSOR_RELATION)
                 .replace("%donator%", event.getSponsor().getName())
                 .replace("%amount%", String.valueOf(event.getAmount()))));
+    }
+
+    @EventHandler
+    public void onAddMoneyRelation(AddMoneyRelationEvent event) {
+        Player administrator = event.getAdministrator();
+        this.getOnlineAdministrators().filter(p -> p.getName().equalsIgnoreCase(administrator.getName())).forEach(admin ->
+                admin.sendMessage(configManager.getMessage(Message.ADMIN_NOTIFY_ADDMONEY_RELATION)
+                        .replace("%administrator%", event.getAdministrator().getName())
+                        .replace("%target%", event.getTarget().getName())
+                        .replace("%amount", String.valueOf(event.getAmount()))));
     }
 }
