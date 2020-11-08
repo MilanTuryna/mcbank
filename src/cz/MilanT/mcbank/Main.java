@@ -50,7 +50,14 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        this.storage.onDisable();
+        if(this.storage != null) {
+            try {
+                this.storage.onDisable();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+                this.log("§cUnable to save player data files (YAML)");
+            }
+        }
     }
 
     public void log(String message) {

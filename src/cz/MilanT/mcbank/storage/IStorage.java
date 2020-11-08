@@ -11,5 +11,5 @@ public interface IStorage {
     public void setPlayerBalance(String name, double balance);
 
     public void onPlayerQuit(String nick) throws IOException;
-    public void onDisable();
+    public void onDisable() throws IOException;
 }

@@ -54,7 +54,7 @@ public class YAMLStorage implements IStorage {
         fileConfiguration.set("nickname", nickname);
         fileConfiguration.set("balance", account.getBalance());
 
-        playersFilesMap.put("nickname", fileConfiguration);
+        playersFilesMap.replace("nickname", fileConfiguration);
 
         return true;
     }
@@ -71,7 +71,12 @@ public class YAMLStorage implements IStorage {
     }
 
     @Override
-    public void onDisable() {
+    public void onDisable() throws IOException {
+        if(!playersFilesMap.isEmpty()) {
+            for(FileConfiguration playerConfiguration:playersFilesMap.values()) {
+                playerConfiguration.save(playerConfiguration.get("nickname") + ".yml");
+            }
+        }
         playersFilesMap.clear();
     }
 }
