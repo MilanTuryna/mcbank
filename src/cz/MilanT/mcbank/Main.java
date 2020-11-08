@@ -36,7 +36,7 @@ public class Main extends JavaPlugin implements Listener {
 
             this.log("§aPlugin was enabled!");
             this.getCommand("mcbank").setExecutor(new BankCommand(this, configManager, economyAPI));
-            this.getCommand("adminbank").setExecutor(new AdminBankCommand(configManager, economyAPI));
+            this.getCommand("adminbank").setExecutor(new AdminBankCommand(configManager, economyAPI, this));
 
             pluginManager.registerEvents(new PlayerListener(this, configManager, economyAPI, storage), this);
             pluginManager.registerEvents(new RelationListener(this, configManager), this);

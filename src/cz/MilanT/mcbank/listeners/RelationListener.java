@@ -43,11 +43,11 @@ public class RelationListener implements Listener {
 
     @EventHandler
     public void onAddMoneyRelation(AddMoneyRelationEvent event) {
-        Player administrator = event.getAdministrator();
-        this.getOnlineAdministrators().filter(p -> p.getName().equalsIgnoreCase(administrator.getName())).forEach(admin ->
+        String administrator = event.getAdministratorName();
+        this.getOnlineAdministrators().filter(p -> p.getName().equalsIgnoreCase(administrator)).forEach(admin ->
                 admin.sendMessage(configManager.getMessage(Message.ADMIN_NOTIFY_ADDMONEY_RELATION)
-                        .replace("%administrator%", event.getAdministrator().getName())
-                        .replace("%target%", event.getTarget().getName())
+                        .replace("%administrator%", event.getAdministratorName())
+                        .replace("%target%", event.getTargetName())
                         .replace("%amount", String.valueOf(event.getAmount()))));
     }
 }
