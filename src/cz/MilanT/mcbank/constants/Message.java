@@ -9,5 +9,7 @@ public final class Message {
     public static final String RECEIVED_FROM_PLAYER = "received_from_player";
     public static final String STATUS_COMMAND = "status_command";
 
+    public static final String ADMIN_NOTIFY_PAY_RELATION = "admin_notify_pay_relation";
+    public static final String ADMIN_NOTIFY_SPONSOR_RELATION = "admin_notify_sponsor_relation";
     public static final String ADMIN_CONFIGURATION_CHANGED = "admin_configuration_changed";
 }

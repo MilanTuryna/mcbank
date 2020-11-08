@@ -41,4 +41,6 @@ messages:
   successfully_sent: "&7You successfully sent &c%payAmount%%currencySymbol%&7 to &e%donatedPlayer%&7, and now you have &a%balance%"
   pm_thanks_to_sponsor: ""
   bc_thanks_to_sponsor: ""
+  admin_notify_pay_relation: "&7Player &e%donator%&7 has sent &a%amount%%currencySymbol%&7 to &e%target%"
+  admin_notify_sponsor_relation: "&7Player sponsor &e%donator% gifted &a%amount%%currencySymbol% to &7%%server economy."
   admin_configuration_changed: "&7You have successfully changed &e%key% to &a%value%  "
