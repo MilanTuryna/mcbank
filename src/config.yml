@@ -34,7 +34,8 @@ errorMessages:
   admin_bad_argument: "&cBad argument! &7Write &a/adminmcbank&7 for help with bank account"
   no_console: "&cThis command is enabled only for players!"
   pay_to_offline: "&cYou want to send money to player which is not online."
-  no_permission: "&&You don't have permission for bank command."
+  player_account_not_found: "&cPlayer's (&e%player%&c) bank account not found"
+  no_permission: "&cYou don't have permission for bank command."
 messages:
   status_command: "&e%player%&7, your current account balance is &a%balance%%currencySymbol%"
   received_from_player: "&7You received &a%payAmount%&7 from &e%player%"
@@ -43,4 +44,5 @@ messages:
   bc_thanks_to_sponsor: ""
   admin_notify_pay_relation: "&7Player &e%donator%&7 has sent &a%amount%%currencySymbol%&7 to &e%target%"
   admin_notify_sponsor_relation: "&7Player sponsor &e%donator% gifted &a%amount%%currencySymbol% to &7%%server economy."
-  admin_configuration_changed: "&7You have successfully changed &e%key% to &a%value%  "
+  admin_configuration_changed: "&7You have successfully changed &e%key% to &a%value%"
+  admin_check_balance: "§e%player% §7currently has §a%balance%%currencySymbol%"

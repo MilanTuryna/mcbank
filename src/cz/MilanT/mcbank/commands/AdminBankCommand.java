@@ -8,12 +8,16 @@ import cz.MilanT.mcbank.vault.EconomyAPI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public class AdminBankCommand implements CommandExecutor {
+    private final Plugin plugin;
     private final ConfigManager configManager;
     private final EconomyAPI economyAPI;
 
-    public AdminBankCommand(ConfigManager configManager, EconomyAPI economyAPI) {
+    public AdminBankCommand(Plugin plugin, ConfigManager configManager, EconomyAPI economyAPI) {
+        this.plugin = plugin;
         this.configManager = configManager;
         this.economyAPI = economyAPI;
     }
@@ -40,10 +44,25 @@ public class AdminBankCommand implements CommandExecutor {
                                 .replace("%value%", String.valueOf(parsedBoolean))
                         );
                     } else {
-                        sender.sendMessage(configManager.getMessage(Error.ADMIN_BAD_ARGUMENT));
+                        sender.sendMessage(configManager.getError(Error.ADMIN_BAD_ARGUMENT));
+                    }
+                } else if(args[0].equalsIgnoreCase("balance")) {
+                    if(args.length == 2) {
+                        String playerName = args[1];
+                        if(economyAPI.hasAccount(playerName)) {
+                            double balance = economyAPI.getBalance(playerName);
+                            sender.sendMessage(configManager.getMessage(Message.ADMIN_CHECK_BALANCE)
+                                    .replace("%player%", args[1])
+                                    .replace("%balance%", String.valueOf(balance)));
+                        } else {
+                            sender.sendMessage(configManager.getError(Error.PLAYER_ACCOUNT_NOT_FOUND)
+                                    .replace("%player%", args[1]));
+                        }
+                    } else {
+                        sender.sendMessage(configManager.getError(Error.ADMIN_BAD_ARGUMENT));
                     }
                 } else {
-                    sender.sendMessage(configManager.getMessage(Error.ADMIN_BAD_ARGUMENT));
+                    sender.sendMessage(configManager.getError(Error.ADMIN_BAD_ARGUMENT));
                 }
             }
         } else {
