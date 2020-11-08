@@ -1,6 +1,7 @@
 package cz.MilanT.mcbank.commands;
 
 import cz.MilanT.mcbank.constants.Error;
+import cz.MilanT.mcbank.constants.Message;
 import cz.MilanT.mcbank.constants.Permission;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.vault.EconomyAPI;
@@ -32,8 +33,12 @@ public class AdminBankCommand implements CommandExecutor {
             if(args.length > 0) {
                 if(args[0].equalsIgnoreCase("notifyrelations")) {
                     if(args.length == 2) {
-                        configManager.getConfig().set("notifyrelations", Boolean.parseBoolean(args[1]));
-                        sender.sendMessage("uspesne jsi to zmenil");
+                        boolean parsedBoolean = Boolean.parseBoolean(args[1]);
+                        configManager.getConfig().set("notifyrelations", parsedBoolean);
+                        sender.sendMessage(configManager.getMessage(Message.ADMIN_CONFIGURATION_CHANGED)
+                                .replace("%key%", "NOTIFY_RELATIONS")
+                                .replace("%value%", String.valueOf(parsedBoolean))
+                        );
                     } else {
                         sender.sendMessage("test this condition -1");
                     }
