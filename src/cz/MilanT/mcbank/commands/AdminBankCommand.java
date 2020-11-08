@@ -8,16 +8,13 @@ import cz.MilanT.mcbank.vault.EconomyAPI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class AdminBankCommand implements CommandExecutor {
-    private final Plugin plugin;
     private final ConfigManager configManager;
     private final EconomyAPI economyAPI;
 
-    public AdminBankCommand(Plugin plugin, ConfigManager configManager, EconomyAPI economyAPI) {
-        this.plugin = plugin;
+    public AdminBankCommand(ConfigManager configManager, EconomyAPI economyAPI) {
         this.configManager = configManager;
         this.economyAPI = economyAPI;
     }
