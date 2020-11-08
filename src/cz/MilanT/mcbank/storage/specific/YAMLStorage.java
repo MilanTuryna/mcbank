@@ -36,7 +36,8 @@ public class YAMLStorage implements IStorage {
 
     @Override
     public boolean hasPlayerAccount(String name) {
-        return playersFilesMap.containsKey(name);
+        return playersFilesMap.containsKey(name)
+                || new File(folder.getAbsolutePath() + File.separator + name + ".yml").exists();
     }
 
     @Override
