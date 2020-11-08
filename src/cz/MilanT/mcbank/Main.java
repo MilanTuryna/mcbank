@@ -34,7 +34,18 @@ public class Main extends JavaPlugin implements Listener {
             Vault vault = new Vault(this, economyAPI);
             vault.registerEconomy();
 
-            this.log("§aPlugin was enabled!");
+            this.log(" ");
+            this.log("§a########################################");
+            this.log("§a#            §f§lMcBank Economy            §a#");
+            this.log("§a# §7A plugin for adding bank and economy §a#");
+            this.log("§a# §7system to Minecraft spigot servers.  §a#");
+            this.log("§a#                                      §a#");
+            this.log("§a# §eDeveloped by §aMilanT                  §a#");
+            this.log("§a# §fhttps://github.com/MilanTuryna       §a#");
+            this.log("§a#                                      #");
+            this.log("§a########################################");
+            this.log(" ");
+
             this.getCommand("mcbank").setExecutor(new BankCommand(this, configManager, economyAPI));
             this.getCommand("adminbank").setExecutor(new AdminBankCommand(configManager, economyAPI, this));
 

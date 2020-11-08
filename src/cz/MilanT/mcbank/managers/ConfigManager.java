@@ -5,12 +5,10 @@ import cz.MilanT.mcbank.db.mysql.Database;
 import cz.MilanT.mcbank.storage.specific.MySQLStorage;
 import cz.MilanT.mcbank.storage.specific.YAMLStorage;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import cz.MilanT.mcbank.storage.IStorage;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 
@@ -22,7 +20,7 @@ public class ConfigManager {
     }
 
     public String getString(String string) {
-        return ChatColor.translateAlternateColorCodes('&', this.getConfig().getString(string)).replace("%currencySymbol%", this.getCurrency());
+        return ChatColor.translateAlternateColorCodes('&', this.getConfig().getString(string));
     }
 
     public String getCurrency() {
