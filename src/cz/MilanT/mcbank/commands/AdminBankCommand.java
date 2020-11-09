@@ -7,6 +7,7 @@ import cz.MilanT.mcbank.constants.Variable;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.system.events.admin.AddMoneyRelationEvent;
 import cz.MilanT.mcbank.system.events.admin.RemoveMoneyRelationEvent;
+import cz.MilanT.mcbank.system.events.plugin.ReloadConfigurationEvent;
 import cz.MilanT.mcbank.vault.EconomyAPI;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.Command;
@@ -128,6 +129,11 @@ public class AdminBankCommand implements CommandExecutor {
                     } else {
                         sender.sendMessage(configManager.getError(Error.ADMIN_BAD_ARGUMENT));
                     }
+                } else if(args[0].equalsIgnoreCase("reload")) {
+                    this.configManager.reloadConfig();
+                    sender.sendMessage(configManager.getMessage(configManager.getMessage(Message.ADMIN_CONFIGURATION_RELOADED)));
+                    ReloadConfigurationEvent reloadConfigurationEvent = new ReloadConfigurationEvent(sender.getName());
+                    pluginManager.callEvent(reloadConfigurationEvent);
                 } else {
                     sender.sendMessage(configManager.getError(Error.ADMIN_BAD_ARGUMENT));
                 }

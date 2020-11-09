@@ -1,5 +1,6 @@
 package cz.MilanT.mcbank;
 
+import cz.MilanT.mcbank.listeners.PluginListener;
 import cz.MilanT.mcbank.listeners.RelationListener;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.commands.AdminBankCommand;
@@ -52,6 +53,7 @@ public class Main extends JavaPlugin implements Listener {
             this.getCommand("mcbank").setExecutor(new BankCommand(this, configManager, economyAPI));
             this.getCommand("adminbank").setExecutor(new AdminBankCommand(configManager, economyAPI, this));
 
+            pluginManager.registerEvents(new PluginListener(this, configManager), this);
             pluginManager.registerEvents(new PlayerListener(this, configManager, economyAPI, storage), this);
             pluginManager.registerEvents(new RelationListener(this, configManager), this);
         } catch(SQLException sqlException) {
