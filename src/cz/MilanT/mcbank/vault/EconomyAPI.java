@@ -9,6 +9,7 @@ import org.bukkit.OfflinePlayer;
 import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,12 +59,24 @@ public class EconomyAPI implements Economy {
 
     @Override
     public boolean hasAccount(String playerName) {
-        return storage.hasPlayerAccount(playerName);
+        try {
+            return storage.hasPlayerAccount(playerName);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        return false;
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer player) {
-        return storage.hasPlayerAccount(player.getName());
+        try {
+            return storage.hasPlayerAccount(player.getName());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+
+        return false;
     }
 
     @Override
@@ -78,7 +91,12 @@ public class EconomyAPI implements Economy {
 
     @Override
     public double getBalance(String playerName) {
-        return storage.getPlayerAccount(playerName).getBalance();
+        try {
+            return storage.getPlayerAccount(playerName).getBalance();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return 0;
     }
 
     @Override
@@ -98,7 +116,12 @@ public class EconomyAPI implements Economy {
 
     @Override
     public boolean has(String playerName, double amount) {
-        return storage.getPlayerAccount(playerName).getBalance() >= amount;
+        try {
+            return storage.getPlayerAccount(playerName).getBalance() >= amount;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return false;
+        }
     }
 
     @Override
@@ -118,15 +141,19 @@ public class EconomyAPI implements Economy {
 
     @Override
     public EconomyResponse withdrawPlayer(String playerName, double amount) {
-        if(!hasAccount(playerName)) return new EconomyResponse(0,0, ResponseType.FAILURE, "Player don't have a account");
-        if(amount < 0) return new EconomyResponse(0,0, ResponseType.FAILURE, "Cannot deposit negative amount number");
+        try {
+            if(!hasAccount(playerName)) return new EconomyResponse(0,0, ResponseType.FAILURE, "Player don't have a account");
+            if(amount < 0) return new EconomyResponse(0,0, ResponseType.FAILURE, "Cannot deposit negative amount number");
 
-        Account account = this.storage.getPlayerAccount(playerName);
-        double result = account.getBalance() - amount;
-        if(result < 0) return new EconomyResponse(0,0, ResponseType.FAILURE, "Player don't have a balance for this withdraw");
-        this.storage.setPlayerBalance(playerName, result);
-
-        return new EconomyResponse(amount, result, ResponseType.SUCCESS, null);
+            Account account = this.storage.getPlayerAccount(playerName);
+            double result = account.getBalance() - amount;
+            if(result < 0) return new EconomyResponse(0,0, ResponseType.FAILURE, "Player don't have a balance for this withdraw");
+            this.storage.setPlayerBalance(playerName, result);
+            return new EconomyResponse(amount, result, ResponseType.SUCCESS, null);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return new EconomyResponse(0,0, ResponseType.FAILURE, "Database Storage error");
+        }
     }
 
     @Override
@@ -146,14 +173,18 @@ public class EconomyAPI implements Economy {
 
     @Override
     public EconomyResponse depositPlayer(String playerName, double amount) {
-        if(!hasAccount(playerName)) return new EconomyResponse(0,0, ResponseType.FAILURE, "Player don't have a account");
-        if(amount < 0) return new EconomyResponse(0,0, ResponseType.FAILURE, "Cannot deposit negative amount number");
+        try {
+            if(!hasAccount(playerName)) return new EconomyResponse(0,0, ResponseType.FAILURE, "Player don't have a account");
+            if(amount < 0) return new EconomyResponse(0,0, ResponseType.FAILURE, "Cannot deposit negative amount number");
 
-        Account account = this.storage.getPlayerAccount(playerName);
-        double result = amount + account.getBalance();
-        this.storage.setPlayerBalance(playerName, result);
-
-        return new EconomyResponse(amount, result, ResponseType.SUCCESS, null);
+            Account account = this.storage.getPlayerAccount(playerName);
+            double result = amount + account.getBalance();
+            this.storage.setPlayerBalance(playerName, result);
+            return new EconomyResponse(amount, result, ResponseType.SUCCESS, null);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+            return new EconomyResponse(0,0, ResponseType.FAILURE, "Database Storage error");
+        }
     }
 
     @Override
@@ -244,7 +275,7 @@ public class EconomyAPI implements Economy {
         Account account = new Account(playerName, 0);
         try {
             return storage.createPlayerAccount(account);
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
 

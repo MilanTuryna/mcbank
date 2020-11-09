@@ -1,7 +1,6 @@
 package cz.MilanT.mcbank.managers;
 
 import cz.MilanT.mcbank.constants.Storage;
-import cz.MilanT.mcbank.db.mysql.Database;
 import cz.MilanT.mcbank.storage.specific.MySQLStorage;
 import cz.MilanT.mcbank.storage.specific.YAMLStorage;
 import org.bukkit.ChatColor;
@@ -9,6 +8,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import cz.MilanT.mcbank.storage.IStorage;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
@@ -50,8 +51,8 @@ public class ConfigManager {
             String name = this.getString("storage.mysql.name");
             String password = this.getString("storage.mysql.password");
 
-            Database database = new Database(db, name, password);
-            return new MySQLStorage(database);
+            Connection connection = DriverManager.getConnection( "jdbc:mysql://localhost/" + db, name, password);
+            return new MySQLStorage(connection);
         }
 
         return new YAMLStorage(this.plugin);
