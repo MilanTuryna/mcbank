@@ -38,6 +38,7 @@ public class AdminBankCommand implements CommandExecutor {
                 sender.sendMessage("/adminbank removemoney <player> <amount>");
                 sender.sendMessage("/adminbank balance <player>");
                 sender.sendMessage("/adminbank notifyrelations <true|false> (now: " + notifyrelations + ")");
+                sender.sendMessage("/adminbank reload");
             }
 
             if(args.length > 0) {
