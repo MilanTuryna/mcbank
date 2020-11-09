@@ -70,7 +70,7 @@ public class AdminBankCommand implements CommandExecutor {
                     }
                 } else if(args[0].equalsIgnoreCase("addmoney")) {
                     if(args.length == 3) {
-                        String playerName = args[2];
+                        String playerName = args[1];
                         int payAmount;
                         try {
                             payAmount = Integer.parseInt(args[2]);
