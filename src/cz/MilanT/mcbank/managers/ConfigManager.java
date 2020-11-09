@@ -35,9 +35,14 @@ public class ConfigManager {
         return this.getString("messages." + message);
     }
 
+    public void reloadConfig() {
+        this.plugin.reloadConfig();
+    }
+
     public FileConfiguration getConfig() {
         return this.plugin.getConfig();
     }
+
     public IStorage getStorage() throws SQLException {
         String activatedStorage = this.getString("storage.active");
         if(activatedStorage.equalsIgnoreCase(Storage.MYSQL)) {
