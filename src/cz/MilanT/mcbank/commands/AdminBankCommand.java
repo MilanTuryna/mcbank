@@ -132,7 +132,7 @@ public class AdminBankCommand implements CommandExecutor {
                     }
                 } else if(args[0].equalsIgnoreCase("reload")) {
                     this.configManager.reloadConfig();
-                    sender.sendMessage(configManager.getMessage(configManager.getMessage(Message.ADMIN_CONFIGURATION_RELOADED)));
+                    sender.sendMessage(configManager.getMessage(Message.ADMIN_CONFIGURATION_RELOADED));
                     ReloadConfigurationEvent reloadConfigurationEvent = new ReloadConfigurationEvent(sender.getName());
                     pluginManager.callEvent(reloadConfigurationEvent);
                 } else {
