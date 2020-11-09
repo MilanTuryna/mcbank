@@ -111,7 +111,7 @@ public class AdminBankCommand implements CommandExecutor {
                                 if(economyAPI.has(playerName, payAmount)) {
                                     EconomyResponse economyResponse = economyAPI.withdrawPlayer(playerName, payAmount);
                                     if(economyResponse.transactionSuccess()) {
-                                        sender.sendMessage(Message.ADMIN_SUCCESS_ADD
+                                        sender.sendMessage(Message.ADMIN_SUCCESS_REMOVE
                                                 .replace("%target%", playerName)
                                                 .replace("%amount%", String.valueOf(payAmount)));
                                         RemoveMoneyRelationEvent removeMoneyRelationEvent = new RemoveMoneyRelationEvent(sender.getName(), playerName, payAmount);
