@@ -1,6 +1,7 @@
 package cz.MilanT.mcbank.managers;
 
 import cz.MilanT.mcbank.constants.Storage;
+import cz.MilanT.mcbank.constants.Variable;
 import cz.MilanT.mcbank.storage.specific.MySQLStorage;
 import cz.MilanT.mcbank.storage.specific.YAMLStorage;
 import org.bukkit.ChatColor;
@@ -21,11 +22,11 @@ public class ConfigManager {
     }
 
     public String getString(String string) {
-        return ChatColor.translateAlternateColorCodes('&', this.getConfig().getString(string));
+        return ChatColor.translateAlternateColorCodes('&', this.getConfig().getString(string)).replace(Variable.CURRENCY_SYMBOL, this.getCurrency());
     }
 
     public String getCurrency() {
-        return this.getString("currencySymbol");
+        return this.getConfig().getString("currencySymbol"); // used getConfig() because using getString method would cause an infinite loop
     }
 
     public String getError(String error) {
