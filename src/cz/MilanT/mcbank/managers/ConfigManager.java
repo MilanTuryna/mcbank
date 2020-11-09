@@ -2,8 +2,8 @@ package cz.MilanT.mcbank.managers;
 
 import cz.MilanT.mcbank.constants.Storage;
 import cz.MilanT.mcbank.constants.Variable;
-import cz.MilanT.mcbank.storage.specific.MySQLStorage;
-import cz.MilanT.mcbank.storage.specific.YAMLStorage;
+import cz.MilanT.mcbank.storage.specific.mysql.MySQLStorage;
+import cz.MilanT.mcbank.storage.specific.yaml.YAMLStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;

@@ -1,4 +1,4 @@
-package cz.MilanT.mcbank.storage.specific;
+package cz.MilanT.mcbank.storage.specific.yaml;
 
 import cz.MilanT.mcbank.storage.IStorage;
 import cz.MilanT.mcbank.system.player.Account;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class YAMLStorage implements IStorage {
-    private final HashMap<String, FileConfiguration> playersFilesMap;
+    private final HashMap<String, PlayerDataFile> playersFilesMap;
     private final File folder;
 
     public YAMLStorage(Plugin plugin) {
@@ -25,15 +25,22 @@ public class YAMLStorage implements IStorage {
             for(File fileInFolder:filesInFolder) {
                 String fileName = FilenameUtils.removeExtension(fileInFolder.getName());
                 Bukkit.getLogger().info(fileName);
-                if(!playersFilesMap.containsKey(fileName))
-                    playersFilesMap.put(fileName, YamlConfiguration.loadConfiguration(fileInFolder));
+                if(!playersFilesMap.containsKey(fileName)) {
+                    FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(fileInFolder);
+                    fileConfiguration.set("nickname", fileName);
+                    fileConfiguration.set("balance", 0);
+                    PlayerDataFile playerDataFile = new PlayerDataFile(fileName, fileInFolder,fileConfiguration);
+                    playersFilesMap.put(fileName, playerDataFile);
+                }
+
             }
         }
     }
 
     @Override
     public Account getPlayerAccount(String name) {
-        FileConfiguration fileConfiguration = playersFilesMap.get(name);
+        PlayerDataFile playerDataFile = playersFilesMap.get(name);
+        FileConfiguration fileConfiguration = playerDataFile.getFileConfiguration();
         return new Account(name, fileConfiguration.getDouble("balance"));
     }
 
@@ -51,25 +58,28 @@ public class YAMLStorage implements IStorage {
             if(!playerFile.exists()) {
                 if(!playerFile.createNewFile()) return false;
             }
-            playersFilesMap.put(nickname, YamlConfiguration.loadConfiguration(playerFile));
+            PlayerDataFile playerDataFile = new PlayerDataFile(nickname, playerFile, YamlConfiguration.loadConfiguration(playerFile));
+            playersFilesMap.put(nickname, playerDataFile);
         }
 
-        FileConfiguration fileConfiguration = playersFilesMap.get(nickname);
+        PlayerDataFile playerDataFile = playersFilesMap.get(nickname);
+        FileConfiguration fileConfiguration = playerDataFile.getFileConfiguration();
         fileConfiguration.set("nickname", nickname);
         fileConfiguration.set("balance", account.getBalance());
+        playerDataFile.setFileConfiguration(fileConfiguration);
 
-        playersFilesMap.replace("nickname", fileConfiguration);
+        playersFilesMap.replace("nickname", playerDataFile);
 
         return true;
     }
 
     @Override
     public void setPlayerBalance(String name, double balance) {
-        playersFilesMap.get(name).set("balance", balance);
+        playersFilesMap.get(name).getFileConfiguration().set("balance", balance);
     }
 
     public void onPlayerQuit(String nick) throws IOException {
-        playersFilesMap.get(nick)
+        playersFilesMap.get(nick).getFileConfiguration()
                 .save(nick + ".yml");
         playersFilesMap.remove(nick);
     }
@@ -77,8 +87,15 @@ public class YAMLStorage implements IStorage {
     @Override
     public void onDisable() throws IOException {
         if(!playersFilesMap.isEmpty()) {
-            for(FileConfiguration playerConfiguration:playersFilesMap.values()) {
-                playerConfiguration.save(playerConfiguration.get("nickname") + ".yml");
+            for(PlayerDataFile playerDataFile:playersFilesMap.values())
+            {
+                FileConfiguration fileConfiguration = playerDataFile.getFileConfiguration();
+                String nickname = fileConfiguration.getString("nickname");
+                if(nickname != null) {
+                    fileConfiguration.save(nickname + ".yml");
+                } else {
+                    fileConfiguration.save("");
+                }
             }
         }
         playersFilesMap.clear();

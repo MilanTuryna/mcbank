@@ -1,4 +1,4 @@
-package cz.MilanT.mcbank.storage.specific;
+package cz.MilanT.mcbank.storage.specific.mysql;
 
 import cz.MilanT.mcbank.storage.IStorage;
 import cz.MilanT.mcbank.system.player.Account;
