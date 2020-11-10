@@ -4,8 +4,10 @@ import cz.MilanT.mcbank.constants.Storage;
 import cz.MilanT.mcbank.constants.Variable;
 import cz.MilanT.mcbank.storage.specific.mysql.MySQLStorage;
 import cz.MilanT.mcbank.storage.specific.yaml.YAMLStorage;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import cz.MilanT.mcbank.storage.IStorage;
 
@@ -31,6 +33,10 @@ public class ConfigManager {
 
     public String getError(String error) {
         return this.getString("errorMessages." + error);
+    }
+
+    public ItemStack getMoneyBagItem() {
+        return NBTEditor.getHead(this.getConfig().getString("moneyBagItem"));
     }
 
     public String getMessage(String message) {
