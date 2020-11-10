@@ -9,4 +9,5 @@ public final class Permission {
     public static final String COMMAND_STATUS = "mcbank.status";
     public static final String COMMAND_PAY = "mcbank.pay";
     public static final String COMMAND_SPONSOR = "mcbank.sponsor";
+    public static final String COMMAND_DEPOSIT = "mcbank.deposit";
 }
