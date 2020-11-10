@@ -3,7 +3,6 @@ package cz.MilanT.mcbank.storage.specific.yaml;
 import cz.MilanT.mcbank.storage.IStorage;
 import cz.MilanT.mcbank.system.player.Account;
 import org.apache.commons.io.FilenameUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -24,7 +23,6 @@ public class YAMLStorage implements IStorage {
         if(filesInFolder != null) {
             for(File fileInFolder:filesInFolder) {
                 String fileName = FilenameUtils.removeExtension(fileInFolder.getName());
-                Bukkit.getLogger().info(fileName);
                 if(!playersFilesMap.containsKey(fileName)) {
                     FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(fileInFolder);
                     fileConfiguration.set("nickname", fileName);
