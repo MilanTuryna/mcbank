@@ -1,16 +1,25 @@
 package cz.MilanT.mcbank.listeners;
 
+import cz.MilanT.mcbank.constants.Message;
+import cz.MilanT.mcbank.constants.MoneyBag;
 import cz.MilanT.mcbank.constants.Variable;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.storage.IStorage;
 import cz.MilanT.mcbank.vault.EconomyAPI;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
+import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.Material;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
@@ -51,13 +60,45 @@ public class PlayerListener implements Listener {
                 .replace(Variable.PLAYER, player.getName())
                 .replace(Variable.CURRENCY_SYMBOL, this.configManager.getCurrency())
                 .replace(Variable.BALANCE, String.valueOf(playerBalance)
-                .replace(Variable.ACTUAL_DEPOSIT, String.valueOf(actualDeposit))
-                .replace(Variable.ACTUAL_WITHDRAW, String.valueOf(actualWithdraw))));
+                        .replace(Variable.ACTUAL_DEPOSIT, String.valueOf(actualDeposit))
+                        .replace(Variable.ACTUAL_WITHDRAW, String.valueOf(actualWithdraw))));
 
         economyAPI.depositPlayer(player, actualDeposit);
         if(playerBalance >= actualWithdraw) economyAPI.withdrawPlayer(player, actualWithdraw);
     }
 
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent playerInteractEvent) {
+        Player player = playerInteractEvent.getPlayer();
+        Action action = playerInteractEvent.getAction();
+        ItemStack item = playerInteractEvent.getItem();
+
+        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
+            Material headMaterial = Material.getMaterial("SKULL_ITEM");
+            if (headMaterial == null) {
+                headMaterial = Material.getMaterial("PLAYER_HEAD");
+            }
+
+            if(item != null && item.getType() == headMaterial) {
+                if(NBTEditor.contains(item, MoneyBag.NBT_TAG)) {
+                    Inventory inventory = player.getInventory();
+                    double actualBagBalance = NBTEditor.getDouble(item, MoneyBag.NBT_TAG);
+                    EconomyResponse economyResponse = economyAPI.depositPlayer(player, actualBagBalance);
+                    if(economyResponse.transactionSuccess()) {
+                        inventory.remove(item);
+                        player.sendMessage(configManager.getMessage(Message.MONEY_BAG_USE)
+                                .replace(Variable.BALANCE, String.valueOf(actualBagBalance)));
+                    } else {
+                        player.sendMessage(economyResponse.errorMessage);
+                    }
+                } else {
+                    player.sendMessage("toto neni spravny item");
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         FileConfiguration configuration = this.configManager.getConfig();
