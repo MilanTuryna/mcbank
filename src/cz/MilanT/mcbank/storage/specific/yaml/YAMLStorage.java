@@ -79,8 +79,9 @@ public class YAMLStorage implements IStorage {
     }
 
     public void onPlayerQuit(String nick) throws IOException {
-        playersFilesMap.get(nick).getFileConfiguration()
-                .save(nick + ".yml");
+        PlayerDataFile playerDataFile = playersFilesMap.get(nick);
+        playerDataFile.getFileConfiguration()
+                .save(playerDataFile.getFile());
         playersFilesMap.remove(nick);
     }
 
@@ -95,7 +96,7 @@ public class YAMLStorage implements IStorage {
                     fileConfiguration.set("nickname", playerDataFile.getPlayerName());
                     fileConfiguration.set("balance", 0.0);
                 }
-                fileConfiguration.save(playerDataFile.getPlayerName() + ".yml");
+                fileConfiguration.save(playerDataFile.getFile());
             }
         }
         playersFilesMap.clear();
