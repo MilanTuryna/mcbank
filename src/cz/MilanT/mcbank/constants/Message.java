@@ -6,6 +6,9 @@ public final class Message {
     public static final String PM_THANKS_TO_SPONSOR = "pm_thanks_to_sponsor";
     public static final String BC_THANKS_TO_SPONSOR = "bc_thanks_to_sponsor";
 
+    public static final String MONEY_BAG_USE = "money_bag_use";
+    public static final String MONEY_BAG_GET = "money_bag_get";
+
     public static final String SUCCESSFULLY_SENT = "successfully_sent";
     public static final String RECEIVED_FROM_PLAYER = "received_from_player";
     public static final String STATUS_COMMAND = "status_command";
