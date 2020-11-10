@@ -1,5 +1,7 @@
 package cz.MilanT.mcbank.managers;
 
+import com.google.common.base.Function;
+import cz.MilanT.mcbank.constants.MoneyBag;
 import cz.MilanT.mcbank.constants.Storage;
 import cz.MilanT.mcbank.constants.Variable;
 import cz.MilanT.mcbank.storage.specific.mysql.MySQLStorage;
@@ -14,6 +16,7 @@ import cz.MilanT.mcbank.storage.IStorage;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class ConfigManager {
@@ -23,8 +26,16 @@ public class ConfigManager {
         this.plugin = plugin;
     }
 
+    public String getTranslatedString(String string) {
+        return ChatColor.translateAlternateColorCodes('&', string);
+    }
+
     public String getString(String string) {
-        return ChatColor.translateAlternateColorCodes('&', this.getConfig().getString(string)).replace(Variable.CURRENCY_SYMBOL, this.getCurrency());
+        return this.getTranslatedString(this.getConfig().getString(string)).replace(Variable.CURRENCY_SYMBOL, this.getCurrency());
+    }
+
+    public List<String> getList(String string) {
+        return this.getConfig().getStringList(string);
     }
 
     public String getCurrency() {
@@ -36,7 +47,7 @@ public class ConfigManager {
     }
 
     public ItemStack getMoneyBagItem() {
-        return NBTEditor.getHead(this.getConfig().getString("moneyBagItem"));
+        return NBTEditor.getHead(this.getConfig().getString(MoneyBag.ITEM_URL));
     }
 
     public String getMessage(String message) {
