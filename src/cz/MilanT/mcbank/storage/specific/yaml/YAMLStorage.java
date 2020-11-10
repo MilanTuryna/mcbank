@@ -91,11 +91,11 @@ public class YAMLStorage implements IStorage {
             {
                 FileConfiguration fileConfiguration = playerDataFile.getFileConfiguration();
                 String nickname = fileConfiguration.getString("nickname");
-                if(nickname != null) {
-                    fileConfiguration.save(nickname + ".yml");
-                } else {
-                    fileConfiguration.save("");
+                if(nickname == null) {
+                    fileConfiguration.set("nickname", playerDataFile.getPlayerName());
+                    fileConfiguration.set("balance", 0.0);
                 }
+                fileConfiguration.save(playerDataFile.getPlayerName() + ".yml");
             }
         }
         playersFilesMap.clear();
