@@ -10,7 +10,6 @@
 # messages.sucessfully_sent : player,donatedplayer,currencysymbol,balance,payamount
 
 prefix: ""
-moneyBagItem: "http://textures.minecraft.net/texture/e36e94f6c34a35465fce4a90f2e25976389eb9709a12273574ff70fd4daa6852"
 currencySymbol: "$"
 playerPermissions: false
 notifyRelations: false
@@ -20,7 +19,22 @@ storage:
     db: ""
     name: ""
     password: ""
+moneyBag:
+  display_name: ""
+  item_url: "http://textures.minecraft.net/texture/e36e94f6c34a35465fce4a90f2e25976389eb9709a12273574ff70fd4daa6852"
+  lore:
+    - &cDada
+    - &cadd
+    - &cdad
 events:
+  deathEvent: ""
+    message: ""
+    withdraw: 0
+    deposit: 0
+  killEvent:
+    message: ""
+    withdraw: 0
+    deposit: 0
   joinEvent:
     message: "Hello %player%! amount: %balance%, deposit: %actualDeposit%, withdraw: %actualWithdraw%"
     withdraw: 0
@@ -38,6 +52,8 @@ errorMessages:
   player_account_not_found: "&cPlayer's (&e%player%&c) bank account not found"
   no_permission: "&cYou don't have permission for bank command."
 messages:
+  money_bag_use: "&7You successfully forwarded money bag richness (&a%balance%%currencySymbol%&7) to your bank account."
+  money_bag_get: "&7You have successfully withdrawn &a%withdraw%%currencySymbol%&7 from your bank account."
   status_command: "&e%player%&7, your current account balance is &a%balance%%currencySymbol%"
   received_from_player: "&7You received &a%payAmount%&7 from &e%player%"
   successfully_sent: "&7You successfully sent &c%payAmount%%currencySymbol%&7 to &e%donatedPlayer%&7, and now you have &a%balance%"
