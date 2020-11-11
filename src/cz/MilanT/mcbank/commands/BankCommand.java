@@ -1,19 +1,25 @@
 package cz.MilanT.mcbank.commands;
 
+import cz.MilanT.mcbank.constants.*;
 import cz.MilanT.mcbank.constants.Error;
-import cz.MilanT.mcbank.constants.Message;
-import cz.MilanT.mcbank.constants.Permission;
-import cz.MilanT.mcbank.constants.Variable;
 import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.system.events.player.PayRelationEvent;
 import cz.MilanT.mcbank.system.events.player.SponsorRelationEvent;
 import cz.MilanT.mcbank.vault.EconomyAPI;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class BankCommand implements CommandExecutor {
     private final Plugin plugin;
@@ -38,6 +44,7 @@ public class BankCommand implements CommandExecutor {
                     player.sendMessage("/mcbank status");
                     player.sendMessage("/mcbank sponsor <amount>");
                     player.sendMessage("/mcbank pay <player> <amount>");
+                    player.sendMessage("/mcbank deposit <amount>");
 
                 }
 
@@ -135,6 +142,49 @@ public class BankCommand implements CommandExecutor {
                             }
                         } else {
                             player.sendMessage(configManager.getError(Error.BAD_ARGUMENT));
+                        }
+                    } else if(args[0].equalsIgnoreCase("deposit")) {
+                        if(!this.checkPermission(player, Permission.COMMAND_DEPOSIT)) {
+                            player.sendMessage(configManager.getError(Error.NO_PERMISSION));
+                            return true;
+                        }
+
+                        if(args.length == 2) {
+                            int amount;
+                            try {
+                                amount = Integer.parseInt(args[1]);
+                            } catch (NumberFormatException exception) {
+                                player.sendMessage(this.configManager.getError(Error.INVALID_NUMBER));
+                                return true;
+                            }
+
+                            double playerBalance = economyAPI.getBalance(player);
+
+                            if(playerBalance >= amount && playerBalance > 0) {
+                                EconomyResponse economyResponse = economyAPI.withdrawPlayer(player, amount);
+                                if(!economyResponse.transactionSuccess()) {
+                                    player.sendMessage(economyResponse.errorMessage);
+                                    return true;
+                                }
+
+                                String stringAmount = String.valueOf(amount);
+                                ItemStack moneyItem = configManager.getMoneyBagItem();
+                                moneyItem = NBTEditor.set(moneyItem, amount, MoneyBag.NBT_TAG);
+                                ItemMeta itemMeta = moneyItem.getItemMeta();
+                                List<String> lore = this.configManager.getList(MoneyBag.LORE)
+                                        .stream()
+                                        .map(e -> configManager.getTranslatedString(e).replace(Variable.AMOUNT, stringAmount))
+                                        .collect(Collectors.toList());
+                                itemMeta.setDisplayName(this.configManager.getString(MoneyBag.NAME));
+                                itemMeta.setLore(lore);
+                                moneyItem.setItemMeta(itemMeta);
+                                player.getInventory().addItem(moneyItem);
+                                player.sendMessage(this.configManager.getMessage(Message.MONEY_BAG_GET).replace(Variable.WITHDRAW, stringAmount));
+                            } else {
+                                player.sendMessage(configManager.getError(Error.BIGGER_AMOUNT)
+                                        .replace(Variable.PAY_AMOUNT, String.valueOf(amount))
+                                        .replace(Variable.BALANCE, String.valueOf(playerBalance)));
+                            }
                         }
                     } else {
                         //probably bad arugment
