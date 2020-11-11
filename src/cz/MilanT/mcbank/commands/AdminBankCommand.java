@@ -83,7 +83,7 @@ public class AdminBankCommand implements CommandExecutor {
                             if(economyAPI.hasAccount(playerName)) {
                                 EconomyResponse economyResponse = economyAPI.depositPlayer(playerName, payAmount);
                                 if(economyResponse.transactionSuccess()) {
-                                    sender.sendMessage(Message.ADMIN_SUCCESS_ADD
+                                    sender.sendMessage(configManager.getMessage(Message.ADMIN_SUCCESS_ADD)
                                             .replace("%target%", playerName)
                                             .replace("%amount%", String.valueOf(payAmount)));
                                     AddMoneyRelationEvent addMoneyRelationEvent = new AddMoneyRelationEvent(sender.getName(), playerName, payAmount);
@@ -101,7 +101,7 @@ public class AdminBankCommand implements CommandExecutor {
                     }
                 } else if(args[0].equalsIgnoreCase("removemoney")) {
                     if(args.length == 3) {
-                        String playerName = args[2];
+                        String playerName = args[1];
                         int payAmount;
                         try {
                             payAmount = Integer.parseInt(args[2]);
