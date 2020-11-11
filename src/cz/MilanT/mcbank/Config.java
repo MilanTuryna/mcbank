@@ -1,29 +1,48 @@
-package cz.MilanT.mcbank.managers;
+package cz.MilanT.mcbank;
 
-import com.google.common.base.Function;
 import cz.MilanT.mcbank.constants.MoneyBag;
 import cz.MilanT.mcbank.constants.Storage;
 import cz.MilanT.mcbank.constants.Variable;
+import cz.MilanT.mcbank.storage.IStorage;
 import cz.MilanT.mcbank.storage.specific.mysql.MySQLStorage;
 import cz.MilanT.mcbank.storage.specific.yaml.YAMLStorage;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import cz.MilanT.mcbank.storage.IStorage;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-
-public class ConfigManager {
+public class Config {
     private final Plugin plugin;
+    private final File file;
+    private final FileConfiguration fileConfiguration;
 
-    public ConfigManager(Plugin plugin) {
+    public Config(Plugin plugin, String fileName) throws IOException, InvalidConfigurationException {
         this.plugin = plugin;
+        this.file = new File(plugin.getDataFolder(), fileName);
+        if(!file.exists()) {
+            file.getParentFile().mkdirs();
+            plugin.saveResource(file.getName(), false);
+        }
+        this.fileConfiguration = new YamlConfiguration();
+        this.fileConfiguration.load(file);
+    }
+
+    public void save() {
+        try {
+            this.fileConfiguration.save(this.file);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 
     public String getTranslatedString(String string) {
@@ -54,12 +73,12 @@ public class ConfigManager {
         return this.getString("messages." + message);
     }
 
-    public void reloadConfig() {
-        this.plugin.reloadConfig();
+    public void reloadConfig() throws IOException, InvalidConfigurationException {
+        this.fileConfiguration.load(this.file);
     }
 
     public FileConfiguration getConfig() {
-        return this.plugin.getConfig();
+        return this.fileConfiguration;
     }
 
     public IStorage getStorage() throws SQLException {
@@ -76,7 +95,7 @@ public class ConfigManager {
         return new YAMLStorage(this.plugin);
     }
 
-    public Plugin getPlugin() {
-        return plugin;
+    public File getFile() {
+        return file;
     }
 }

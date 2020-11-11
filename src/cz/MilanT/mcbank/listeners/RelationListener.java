@@ -1,9 +1,9 @@
 package cz.MilanT.mcbank.listeners;
 
+import cz.MilanT.mcbank.Config;
 import cz.MilanT.mcbank.constants.Message;
 import cz.MilanT.mcbank.constants.Permission;
 import cz.MilanT.mcbank.constants.Variable;
-import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.system.events.admin.AddMoneyRelationEvent;
 import cz.MilanT.mcbank.system.events.admin.RemoveMoneyRelationEvent;
 import cz.MilanT.mcbank.system.events.player.PayRelationEvent;
@@ -17,11 +17,11 @@ import java.util.stream.Stream;
 
 public class RelationListener implements Listener {
     private final Plugin plugin;
-    private final ConfigManager configManager;
+    private final Config configManager;
 
-    public RelationListener(Plugin plugin, ConfigManager configManager) {
+    public RelationListener(Plugin plugin, Config config) {
         this.plugin = plugin;
-        this.configManager = configManager;
+        this.configManager = config;
     }
 
     private Stream<? extends Player> getOnlineAdministrators() {

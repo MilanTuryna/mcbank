@@ -1,8 +1,8 @@
 package cz.MilanT.mcbank.commands;
 
+import cz.MilanT.mcbank.Config;
 import cz.MilanT.mcbank.constants.*;
 import cz.MilanT.mcbank.constants.Error;
-import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.system.events.player.PayRelationEvent;
 import cz.MilanT.mcbank.system.events.player.SponsorRelationEvent;
 import cz.MilanT.mcbank.vault.EconomyAPI;
@@ -22,12 +22,12 @@ import java.util.stream.Collectors;
 
 public class BankCommand implements CommandExecutor {
     private final Plugin plugin;
-    private final ConfigManager configManager;
+    private final Config configManager;
     private final EconomyAPI economyAPI;
 
-    public BankCommand(Plugin plugin, ConfigManager configManager, EconomyAPI economyAPI) {
+    public BankCommand(Plugin plugin, Config config, EconomyAPI economyAPI) {
         this.plugin = plugin;
-        this.configManager = configManager;
+        this.configManager = config;
         this.economyAPI = economyAPI;
     }
 
@@ -183,7 +183,7 @@ public class BankCommand implements CommandExecutor {
                                         .stream()
                                         .map(e -> configManager.getTranslatedString(e).replace(Variable.AMOUNT, stringAmount))
                                         .collect(Collectors.toList());
-                                itemMeta.setDisplayName(this.configManager.getString(MoneyBag.NAME));
+                                itemMeta.setDisplayName(this.configManager.getConfig().getString(MoneyBag.NAME));
                                 itemMeta.setLore(lore);
                                 moneyItem.setItemMeta(itemMeta);
                                 player.getInventory().addItem(moneyItem);
@@ -223,7 +223,7 @@ public class BankCommand implements CommandExecutor {
         return economyAPI;
     }
 
-    public ConfigManager getConfigManager() {
+    public Config getConfigManager() {
         return configManager;
     }
 }

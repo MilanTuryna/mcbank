@@ -1,9 +1,9 @@
 package cz.MilanT.mcbank.listeners;
 
+import cz.MilanT.mcbank.Config;
 import cz.MilanT.mcbank.constants.Message;
 import cz.MilanT.mcbank.constants.MoneyBag;
 import cz.MilanT.mcbank.constants.Variable;
-import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.storage.IStorage;
 import cz.MilanT.mcbank.vault.EconomyAPI;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
@@ -26,13 +26,13 @@ import java.io.IOException;
 
 public class PlayerListener implements Listener {
     private final Plugin plugin;
-    private final ConfigManager configManager;
+    private final Config configManager;
     private final EconomyAPI economyAPI;
     private final IStorage storage;
 
-    public PlayerListener(Plugin plugin, ConfigManager configManager, EconomyAPI economyAPI, IStorage storage) {
+    public PlayerListener(Plugin plugin, Config config, EconomyAPI economyAPI, IStorage storage) {
         this.plugin = plugin;
-        this.configManager = configManager;
+        this.configManager = config;
         this.economyAPI = economyAPI;
         this.storage = storage;
     }
@@ -82,12 +82,14 @@ public class PlayerListener implements Listener {
             if(item != null && item.getType() == headMaterial) {
                 if(NBTEditor.contains(item, MoneyBag.NBT_TAG)) {
                     Inventory inventory = player.getInventory();
-                    double actualBagBalance = NBTEditor.getDouble(item, MoneyBag.NBT_TAG);
-                    EconomyResponse economyResponse = economyAPI.depositPlayer(player, actualBagBalance);
+
+                    EconomyResponse economyResponse = economyAPI.depositPlayer(player, 50);
                     if(economyResponse.transactionSuccess()) {
-                        inventory.remove(item);
+                        inventory.removeItem(item);
+
                         player.sendMessage(configManager.getMessage(Message.MONEY_BAG_USE)
-                                .replace(Variable.BALANCE, String.valueOf(actualBagBalance)));
+                                .replace(Variable.BALANCE, String.valueOf(50)));
+                        playerInteractEvent.setCancelled(true);
                     } else {
                         player.sendMessage(economyResponse.errorMessage);
                     }
@@ -126,7 +128,7 @@ public class PlayerListener implements Listener {
         return economyAPI;
     }
 
-    public ConfigManager getConfigManager() {
+    public Config getConfigManager() {
         return configManager;
     }
 }

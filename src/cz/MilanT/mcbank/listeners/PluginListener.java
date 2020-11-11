@@ -1,8 +1,8 @@
 package cz.MilanT.mcbank.listeners;
 
+import cz.MilanT.mcbank.Config;
 import cz.MilanT.mcbank.constants.Message;
 import cz.MilanT.mcbank.constants.Permission;
-import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.system.events.plugin.ReloadConfigurationEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,11 +13,11 @@ import java.util.stream.Stream;
 
 public class PluginListener implements Listener {
     private final Plugin plugin;
-    private final ConfigManager configManager;
+    private final Config configManager;
 
-    public PluginListener(Plugin plugin, ConfigManager configManager) {
+    public PluginListener(Plugin plugin, Config config) {
         this.plugin = plugin;
-        this.configManager = configManager;
+        this.configManager = config;
     }
 
     private Stream<? extends Player> getOnlineAdministrators() {

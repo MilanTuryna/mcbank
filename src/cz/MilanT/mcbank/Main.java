@@ -2,7 +2,6 @@ package cz.MilanT.mcbank;
 
 import cz.MilanT.mcbank.listeners.PluginListener;
 import cz.MilanT.mcbank.listeners.RelationListener;
-import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.commands.AdminBankCommand;
 import cz.MilanT.mcbank.commands.BankCommand;
 import cz.MilanT.mcbank.storage.IStorage;
@@ -10,6 +9,7 @@ import cz.MilanT.mcbank.vault.EconomyAPI;
 import cz.MilanT.mcbank.vault.Vault;
 import cz.MilanT.mcbank.listeners.PlayerListener;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,17 +19,24 @@ import java.sql.SQLException;
 
 public class Main extends JavaPlugin implements Listener {
     private IStorage storage;
+    private Config config;
+
+    private void stopPlugin(String message) {
+        this.log(message);
+        this.getPluginLoader().disablePlugin(this);
+    }
 
     @Override
     public void onEnable() {
-        ConfigManager configManager = new ConfigManager(this);
         PluginManager pluginManager = this.getServer().getPluginManager();
 
         this.saveDefaultConfig();
         this.getConfig().options().copyDefaults(true);
 
         try {
-            this.storage = configManager.getStorage();
+            this.config = new Config(this,"config.yml");
+            this.storage = config.getStorage();
+
             EconomyAPI economyAPI = new EconomyAPI(this.storage);
 
             Vault vault = new Vault(this, economyAPI);
@@ -50,16 +57,18 @@ public class Main extends JavaPlugin implements Listener {
             this.log("§a########################################");
             this.log(" ");
 
-            this.getCommand("mcbank").setExecutor(new BankCommand(this, configManager, economyAPI));
-            this.getCommand("adminbank").setExecutor(new AdminBankCommand(configManager, economyAPI, this));
+            this.getCommand("mcbank").setExecutor(new BankCommand(this, config, economyAPI));
+            this.getCommand("adminbank").setExecutor(new AdminBankCommand(config, economyAPI, this));
 
-            pluginManager.registerEvents(new PluginListener(this, configManager), this);
-            pluginManager.registerEvents(new PlayerListener(this, configManager, economyAPI, storage), this);
-            pluginManager.registerEvents(new RelationListener(this, configManager), this);
-        } catch(SQLException sqlException) {
-            sqlException.printStackTrace();
-            this.log("§cAn error occurred while connecting to the MySQL database, McBank plugin will be disabled. §a§l>> Check logs for get solution.");
-            this.getPluginLoader().disablePlugin(this);
+            pluginManager.registerEvents(new PluginListener(this, config), this);
+            pluginManager.registerEvents(new PlayerListener(this, config, economyAPI, storage), this);
+            pluginManager.registerEvents(new RelationListener(this, config), this);
+        } catch(SQLException exception) {
+            exception.printStackTrace();
+            this.stopPlugin("§cAn error occurred while connecting to the MySQL database, McBank plugin will be disabled. §a§l>> Check logs for get solution.");
+        } catch (IOException | InvalidConfigurationException exception) {
+            exception.printStackTrace();
+            this.stopPlugin("§cAn error occurred while getting config file, McBank plugin will be disabled. §a§l>> Check logs for get solution.");
         }
     }
 
@@ -74,7 +83,7 @@ public class Main extends JavaPlugin implements Listener {
             }
         }
 
-        this.saveConfig();
+        this.config.save();
     }
 
     public void log(String message) {

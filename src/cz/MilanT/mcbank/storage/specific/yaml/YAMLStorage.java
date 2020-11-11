@@ -6,6 +6,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,22 +55,27 @@ public class YAMLStorage implements IStorage {
     @Override
     public boolean createPlayerAccount(Account account) throws IOException {
         String nickname = account.getNickname().toLowerCase();
+
         if(!playersFilesMap.containsKey(nickname)) {
             File playerFile = new File(folder.getAbsolutePath() + File.separator + nickname + ".yml");
-            if(!playerFile.exists()) {
+            if(!playerFile.exists())
                 if(!playerFile.createNewFile()) return false;
+
+           FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(playerFile);
+           fileConfiguration.set("nickname", nickname);
+           fileConfiguration.set("balance", 0.0);
+           PlayerDataFile playerDataFile = new PlayerDataFile(nickname, playerFile, fileConfiguration);
+           playersFilesMap.put(nickname, playerDataFile);
+        } else {
+            PlayerDataFile playerDataFile = playersFilesMap.get(nickname);
+            FileConfiguration fileConfiguration = playerDataFile.getFileConfiguration();
+            if(fileConfiguration.getString("nickname") == null) {
+                fileConfiguration.set("nickname", nickname);
+                fileConfiguration.set("balance", 0.0);
+                playerDataFile.setFileConfiguration(fileConfiguration);
+                playersFilesMap.replace(nickname, playerDataFile);
             }
-            PlayerDataFile playerDataFile = new PlayerDataFile(nickname, playerFile, YamlConfiguration.loadConfiguration(playerFile));
-            playersFilesMap.put(nickname, playerDataFile);
         }
-
-        PlayerDataFile playerDataFile = playersFilesMap.get(nickname);
-        FileConfiguration fileConfiguration = playerDataFile.getFileConfiguration();
-        fileConfiguration.set("nickname", nickname);
-        fileConfiguration.set("balance", account.getBalance());
-        playerDataFile.setFileConfiguration(fileConfiguration);
-
-        playersFilesMap.replace(nickname, playerDataFile);
 
         return true;
     }

@@ -1,10 +1,10 @@
 package cz.MilanT.mcbank.commands;
 
+import cz.MilanT.mcbank.Config;
 import cz.MilanT.mcbank.constants.Error;
 import cz.MilanT.mcbank.constants.Message;
 import cz.MilanT.mcbank.constants.Permission;
 import cz.MilanT.mcbank.constants.Variable;
-import cz.MilanT.mcbank.managers.ConfigManager;
 import cz.MilanT.mcbank.system.events.admin.AddMoneyRelationEvent;
 import cz.MilanT.mcbank.system.events.admin.RemoveMoneyRelationEvent;
 import cz.MilanT.mcbank.system.events.plugin.ReloadConfigurationEvent;
@@ -13,16 +13,19 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+import java.io.IOException;
+
 public class AdminBankCommand implements CommandExecutor {
-    private final ConfigManager configManager;
+    private final Config configManager;
     private final EconomyAPI economyAPI;
     private final Plugin plugin;
 
-    public AdminBankCommand(ConfigManager configManager, EconomyAPI economyAPI, Plugin plugin) {
-        this.configManager = configManager;
+    public AdminBankCommand(Config config, EconomyAPI economyAPI, Plugin plugin) {
+        this.configManager = config;
         this.economyAPI = economyAPI;
         this.plugin = plugin;
     }
@@ -135,10 +138,15 @@ public class AdminBankCommand implements CommandExecutor {
                         sender.sendMessage(configManager.getError(Error.ADMIN_BAD_ARGUMENT));
                     }
                 } else if(args[0].equalsIgnoreCase("reload")) {
-                    this.configManager.reloadConfig();
-                    sender.sendMessage(configManager.getMessage(Message.ADMIN_CONFIGURATION_RELOADED));
-                    ReloadConfigurationEvent reloadConfigurationEvent = new ReloadConfigurationEvent(sender.getName());
-                    pluginManager.callEvent(reloadConfigurationEvent);
+                    try {
+                        this.configManager.reloadConfig();
+                        sender.sendMessage(configManager.getMessage(Message.ADMIN_CONFIGURATION_RELOADED));
+                        ReloadConfigurationEvent reloadConfigurationEvent = new ReloadConfigurationEvent(sender.getName());
+                        pluginManager.callEvent(reloadConfigurationEvent);
+                    } catch (IOException | InvalidConfigurationException exception) {
+                        exception.printStackTrace();
+                        sender.sendMessage("error messagea");
+                    }
                 } else {
                     sender.sendMessage(configManager.getError(Error.ADMIN_BAD_ARGUMENT));
                 }
@@ -154,7 +162,7 @@ public class AdminBankCommand implements CommandExecutor {
         return sender.hasPermission(node) || sender.isOp();
     }
 
-    public ConfigManager getConfigManager() {
+    public Config getConfigManager() {
         return configManager;
     }
 
