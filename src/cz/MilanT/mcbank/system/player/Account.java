@@ -5,7 +5,7 @@ public class Account {
     private final double balance;
 
     public Account(String nickname, double balance) {
-        this.nickname = nickname;
+        this.nickname = nickname.toLowerCase();
         this.balance = balance;
     }
 

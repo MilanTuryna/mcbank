@@ -22,11 +22,13 @@ public class YAMLStorage implements IStorage {
         File[] filesInFolder = folder.listFiles();
         if(filesInFolder != null) {
             for(File fileInFolder:filesInFolder) {
-                String fileName = FilenameUtils.removeExtension(fileInFolder.getName());
+                String fileName = FilenameUtils.removeExtension(fileInFolder.getName()).toLowerCase();
                 if(!playersFilesMap.containsKey(fileName)) {
                     FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(fileInFolder);
-                    fileConfiguration.set("nickname", fileName);
-                    fileConfiguration.set("balance", 0);
+                    if(!fileConfiguration.contains("nickname")) {
+                        fileConfiguration.set("nickname", fileName);
+                        fileConfiguration.set("balance", 0);
+                    }
                     PlayerDataFile playerDataFile = new PlayerDataFile(fileName, fileInFolder,fileConfiguration);
                     playersFilesMap.put(fileName, playerDataFile);
                 }
@@ -37,20 +39,21 @@ public class YAMLStorage implements IStorage {
 
     @Override
     public Account getPlayerAccount(String name) {
-        PlayerDataFile playerDataFile = playersFilesMap.get(name);
+        PlayerDataFile playerDataFile = playersFilesMap.get(name.toLowerCase());
         FileConfiguration fileConfiguration = playerDataFile.getFileConfiguration();
         return new Account(name, fileConfiguration.getDouble("balance"));
     }
 
     @Override
     public boolean hasPlayerAccount(String name) {
+        name = name.toLowerCase();
         return playersFilesMap.containsKey(name)
                 || new File(folder.getAbsolutePath() + File.separator + name + ".yml").exists();
     }
 
     @Override
     public boolean createPlayerAccount(Account account) throws IOException {
-        String nickname = account.getNickname();
+        String nickname = account.getNickname().toLowerCase();
         if(!playersFilesMap.containsKey(nickname)) {
             File playerFile = new File(folder.getAbsolutePath() + File.separator + nickname + ".yml");
             if(!playerFile.exists()) {
@@ -66,17 +69,18 @@ public class YAMLStorage implements IStorage {
         fileConfiguration.set("balance", account.getBalance());
         playerDataFile.setFileConfiguration(fileConfiguration);
 
-        playersFilesMap.replace("nickname", playerDataFile);
+        playersFilesMap.replace(nickname, playerDataFile);
 
         return true;
     }
 
     @Override
     public void setPlayerBalance(String name, double balance) {
-        playersFilesMap.get(name).getFileConfiguration().set("balance", balance);
+        playersFilesMap.get(name.toLowerCase()).getFileConfiguration().set("balance", balance);
     }
 
     public void onPlayerQuit(String nick) throws IOException {
+        nick = nick.toLowerCase();
         PlayerDataFile playerDataFile = playersFilesMap.get(nick);
         playerDataFile.getFileConfiguration()
                 .save(playerDataFile.getFile());
@@ -91,7 +95,7 @@ public class YAMLStorage implements IStorage {
                 FileConfiguration fileConfiguration = playerDataFile.getFileConfiguration();
                 String nickname = fileConfiguration.getString("nickname");
                 if(nickname == null) {
-                    fileConfiguration.set("nickname", playerDataFile.getPlayerName());
+                    fileConfiguration.set("nickname", playerDataFile.getPlayerName().toLowerCase());
                     fileConfiguration.set("balance", 0.0);
                 }
                 fileConfiguration.save(playerDataFile.getFile());

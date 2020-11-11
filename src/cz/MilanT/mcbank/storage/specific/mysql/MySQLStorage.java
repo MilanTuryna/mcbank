@@ -23,6 +23,8 @@ public class MySQLStorage implements IStorage {
 
     @Override
     public Account getPlayerAccount(String name) throws SQLException {
+        name = name.toLowerCase();
+
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM mcbank WHERE nick = ?");
         preparedStatement.setString(1, name);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -32,6 +34,8 @@ public class MySQLStorage implements IStorage {
 
     @Override
     public boolean hasPlayerAccount(String name) throws SQLException {
+        name = name.toLowerCase();
+
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT nick FROM mcbank WHERE nick = ?");
         preparedStatement.setString(1,name);
         return preparedStatement.execute();
@@ -39,7 +43,7 @@ public class MySQLStorage implements IStorage {
 
     @Override
     public boolean createPlayerAccount(Account account) throws SQLException {
-        String nickname = account.getNickname();
+        String nickname = account.getNickname().toLowerCase();
         if(!hasPlayerAccount(account.getNickname())) {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO mcbank (nick, balance) VALUES (?, ?)");
             preparedStatement.setString(1, nickname);
@@ -53,7 +57,7 @@ public class MySQLStorage implements IStorage {
     public void setPlayerBalance(String name, double balance) throws SQLException {
         PreparedStatement preparedStatement = connection.prepareStatement("UPDATE mcbank SET balance = ? WHERE nick = ?");
         preparedStatement.setDouble(1, balance);
-        preparedStatement.setString(2, name);
+        preparedStatement.setString(2, name.toLowerCase());
         preparedStatement.execute();
     }
 
