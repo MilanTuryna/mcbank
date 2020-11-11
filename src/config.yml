@@ -27,12 +27,12 @@ moneyBag:
     - &cadd
     - &cdad
 events:
-  deathEvent: ""
-    message: ""
+  deathEvent:
+    message: ".."
     withdraw: 0
     deposit: 0
   killEvent:
-    message: ""
+    message: ".."
     withdraw: 0
     deposit: 0
   joinEvent:
