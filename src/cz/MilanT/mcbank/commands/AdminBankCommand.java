@@ -83,11 +83,15 @@ public class AdminBankCommand implements CommandExecutor {
                             if(economyAPI.hasAccount(playerName)) {
                                 EconomyResponse economyResponse = economyAPI.depositPlayer(playerName, payAmount);
                                 if(economyResponse.transactionSuccess()) {
+                                    sender.sendMessage(Message.ADMIN_SUCCESS_ADD
+                                            .replace("%target%", playerName)
+                                            .replace("%amount%", String.valueOf(payAmount)));
                                     AddMoneyRelationEvent addMoneyRelationEvent = new AddMoneyRelationEvent(sender.getName(), playerName, payAmount);
                                     pluginManager.callEvent(addMoneyRelationEvent);
                                 }
                             } else {
-                                sender.sendMessage(this.configManager.getError(Error.PLAYER_ACCOUNT_NOT_FOUND).replace("%player%", playerName));
+                                sender.sendMessage(this.configManager.getError(Error.PLAYER_ACCOUNT_NOT_FOUND)
+                                        .replace("%player%", playerName));
                             }
                         } else {
                             sender.sendMessage(configManager.getError(Error.INVALID_NUMBER));
