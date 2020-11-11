@@ -84,7 +84,6 @@ public class YAMLStorage implements IStorage {
         PlayerDataFile playerDataFile = playersFilesMap.get(nick);
         playerDataFile.getFileConfiguration()
                 .save(playerDataFile.getFile());
-        playersFilesMap.remove(nick);
     }
 
     @Override
