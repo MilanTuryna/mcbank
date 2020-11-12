@@ -40,7 +40,12 @@ events:
     withdraw: 0
     deposit: 0
   joinEvent:
-    message: "Hello %player%! amount: %balance%, deposit: %actualDeposit%, withdraw: %actualWithdraw%"
+    message:
+      - "&8————————————————————————————————————————————————————————"
+      - " "
+      - "Hello %player%! amount: %balance%, deposit: %actualDeposit%, withdraw: %actualWithdraw%"
+      - " "
+      - "&8————————————————————————————————————————————————————————"
     withdraw: 0
     deposit: 0
   quitEvent:
@@ -55,6 +60,7 @@ errorMessages:
   pay_to_offline: "&cYou want to send money to player which is not online."
   player_account_not_found: "&cPlayer's (&e%player%&c) bank account not found"
   no_permission: "&cYou don't have permission for bank command."
+  reload_not_working: "&cAn error occurred when plugin reloading the file configuration. &a>> Check console logs for solution"
 messages:
   money_bag_use: "&7You successfully forwarded money bag richness (&a%balance%%currencySymbol%&7) to your bank account."
   money_bag_get: "&7You have successfully withdrawn &a%withdraw%%currencySymbol%&7 from your bank account."
@@ -64,8 +70,8 @@ messages:
   pm_thanks_to_sponsor: ""
   bc_thanks_to_sponsor: ""
   admin_configuration_reloaded: "&7You successfully reloaded &aMcBank configuration!"
-  admin_success_remove: "&7You successfully removed &a%amount%%currencySymbol%&7 from &e%target%'s bank account"
-  admin_success_add: "&7You successfully added &a%amount%%currencySymbol%&7 to &e%target%'s bank account"
+  admin_success_remove: "&7You successfully removed &a%amount%%currencySymbol%&7 from &e%target%'s bank account" # %target%, %amount%
+  admin_success_add: "&7You successfully added &a%amount%%currencySymbol%&7 to &e%target%'s bank account" # %target%, %amount%
   admin_notify_reloadconfiguration: "&7Administrator &f%administrator% &asuccessfully reloaded plugin configuration."
   admin_notify_addmoney_relation: "&7Administrator &f%administrator% &7successfully added &a%amount%%currencySymbol%&7 to &e%target%"
   admin_notify_removemoney_relation: "&7Administrator &f%administrator% &7successfully removed &a%amount%%currencySymbol%&7 from &e%target%'s&7 bank account"
