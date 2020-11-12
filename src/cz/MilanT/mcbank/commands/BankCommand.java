@@ -169,20 +169,24 @@ public class BankCommand implements CommandExecutor {
                             double playerBalance = economyAPI.getBalance(player);
 
                             if(playerBalance >= amount && playerBalance > 0) {
+                                String stringAmount = String.valueOf(amount);
+                                String playerName = player.getName();
+                                ItemStack moneyItem = configManager.getMoneyBagItem();
+
                                 EconomyResponse economyResponse = economyAPI.withdrawPlayer(player, amount);
                                 if(!economyResponse.transactionSuccess()) {
                                     player.sendMessage(economyResponse.errorMessage);
                                     return true;
                                 }
 
-                                String stringAmount = String.valueOf(amount);
-                                ItemStack moneyItem = configManager.getMoneyBagItem();
-                                moneyItem = NBTEditor.set(moneyItem, amount, MoneyBag.NBT_TAG);
+                                moneyItem = NBTEditor.set(moneyItem, amount, MoneyBag.NBT_TAG_MONEY);
+                                moneyItem = NBTEditor.set(moneyItem, playerName, MoneyBag.NBT_TAG_FIRSTOWNER);
                                 ItemMeta itemMeta = moneyItem.getItemMeta();
                                 List<String> lore = this.configManager.getList(MoneyBag.LORE)
                                         .stream()
                                         .map(e -> configManager.getTranslatedString(e)
                                                 .replace(Variable.AMOUNT, stringAmount)
+                                                .replace(Variable.FIRST_OWNER, playerName)
                                                 .replace(Variable.CURRENCY_SYMBOL, this.configManager.getCurrency()))
                                         .collect(Collectors.toList());
                                 itemMeta.setDisplayName(this.configManager.getConfig().getString(MoneyBag.NAME));
