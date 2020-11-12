@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -82,13 +83,14 @@ public class PlayerListener implements Listener {
             if(item != null && item.getType() == headMaterial) {
                 if(NBTEditor.contains(item, MoneyBag.NBT_TAG)) {
                     Inventory inventory = player.getInventory();
+                    double amount = NBTEditor.getDouble(item, MoneyBag.NBT_TAG);
 
-                    EconomyResponse economyResponse = economyAPI.depositPlayer(player, 50);
+                    EconomyResponse economyResponse = economyAPI.depositPlayer(player, amount);
                     if(economyResponse.transactionSuccess()) {
                         inventory.removeItem(item);
 
                         player.sendMessage(configManager.getMessage(Message.MONEY_BAG_USE)
-                                .replace(Variable.BALANCE, String.valueOf(50)));
+                                .replace(Variable.BALANCE, String.valueOf(amount)));
                         playerInteractEvent.setCancelled(true);
                     } else {
                         player.sendMessage(economyResponse.errorMessage);
@@ -97,6 +99,51 @@ public class PlayerListener implements Listener {
                     player.sendMessage("toto neni spravny item");
                 }
             }
+        }
+    }
+
+    private void onPlayerKill(Player player, Player target) {
+        String killEventMessage = configManager.getString("events.killEvent.message");
+        FileConfiguration config = configManager.getConfig();
+        double withdraw = config.getDouble("events.deathEvent.withdraw");
+        double deposit = config.getDouble("events.deathEvent.deposit");
+
+        EconomyResponse depositEconomyResponse = economyAPI.depositPlayer(player, deposit);
+        EconomyResponse withdrawEconomyResponse = economyAPI.withdrawPlayer(player, withdraw);
+
+        if(depositEconomyResponse.transactionSuccess() && withdrawEconomyResponse.transactionSuccess()
+                && !killEventMessage.isEmpty()) {
+            player.sendMessage(killEventMessage
+                    .replace(Variable.WITHDRAW, String.valueOf(withdraw))
+                    .replace(Variable.DEPOSIT, String.valueOf(deposit))
+                    .replace(Variable.PLAYER, player.getName())
+                    .replace(Variable.TARGET, target.getName()));
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity().getPlayer();
+        Player killer = player.getKiller();
+
+        if(killer == null) {
+            String deathEventMessage = configManager.getString("events.deathEvent.message");
+            FileConfiguration config = configManager.getConfig();
+            double withdraw = config.getDouble("events.deathEvent.withdraw");
+            double deposit = config.getDouble("events.deathEvent.deposit");
+
+            EconomyResponse depositEconomyResponse = economyAPI.depositPlayer(player, deposit);
+            EconomyResponse withdrawEconomyResponse = economyAPI.withdrawPlayer(player, withdraw);
+
+            if(depositEconomyResponse.transactionSuccess() && withdrawEconomyResponse.transactionSuccess()
+                    && !deathEventMessage.isEmpty()) {
+                player.sendMessage(deathEventMessage
+                        .replace(Variable.PLAYER, player.getName())
+                        .replace(Variable.WITHDRAW, String.valueOf(withdraw))
+                        .replace(Variable.DEPOSIT, String.valueOf(deposit)));
+            }
+        } else {
+            this.onPlayerKill(killer, player);
         }
     }
 

@@ -1,6 +1,6 @@
 package cz.MilanT.mcbank.constants;
 
-public class Storage {
+public final class Storage {
     private Storage() {
 
     }

@@ -29,11 +29,11 @@ moneyBag:
 
 events:
   deathEvent:
-    message: ".."
+    message: ".." # %withdraw%, %deposit%, %player%
     withdraw: 0
     deposit: 0
   killEvent:
-    message: ".."
+    message: ".." # %target%, %withdraw%, %deposit%, %player%
     withdraw: 0
     deposit: 0
   joinEvent:
