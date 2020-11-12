@@ -11,8 +11,6 @@ c
 src/plugin.yml,2\5\25a3b99d27587e07b259cc1d525c25caddec8926
 b
 2src/cz/MilanT/mcbank/listeners/PlayerListener.java,7\f\7f7880a53189c01774541f133861c3e5b6235b6a
-`
-0src/cz/MilanT/mcbank/managers/ConfigManager.java,f\6\f699fe029587247715d634cc40b249a447923054
 Z
 *src/cz/MilanT/mcbank/vault/EconomyAPI.java,0\7\0764a28ba6a26cba6067a0253c3685b175e9e987
 N

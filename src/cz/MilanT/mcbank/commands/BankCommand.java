@@ -181,7 +181,9 @@ public class BankCommand implements CommandExecutor {
                                 ItemMeta itemMeta = moneyItem.getItemMeta();
                                 List<String> lore = this.configManager.getList(MoneyBag.LORE)
                                         .stream()
-                                        .map(e -> configManager.getTranslatedString(e).replace(Variable.AMOUNT, stringAmount))
+                                        .map(e -> configManager.getTranslatedString(e)
+                                                .replace(Variable.AMOUNT, stringAmount)
+                                                .replace(Variable.CURRENCY_SYMBOL, this.configManager.getCurrency()))
                                         .collect(Collectors.toList());
                                 itemMeta.setDisplayName(this.configManager.getConfig().getString(MoneyBag.NAME));
                                 itemMeta.setLore(lore);
