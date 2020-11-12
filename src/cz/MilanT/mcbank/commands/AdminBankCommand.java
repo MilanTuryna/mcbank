@@ -50,8 +50,8 @@ public class AdminBankCommand implements CommandExecutor {
                         boolean parsedBoolean = Boolean.parseBoolean(args[1]);
                         configManager.getConfig().set("notifyrelations", parsedBoolean);
                         sender.sendMessage(configManager.getMessage(Message.ADMIN_CONFIGURATION_CHANGED)
-                                .replace("%key%", "NOTIFY_RELATIONS")
-                                .replace("%value%", String.valueOf(parsedBoolean))
+                                .replace(Variable.KEY, "NOTIFY_RELATIONS")
+                                .replace(Variable.VALUE, String.valueOf(parsedBoolean))
                         );
                     } else {
                         sender.sendMessage(configManager.getError(Error.ADMIN_BAD_ARGUMENT));
@@ -62,11 +62,11 @@ public class AdminBankCommand implements CommandExecutor {
                         if(economyAPI.hasAccount(playerName)) {
                             double balance = economyAPI.getBalance(playerName);
                             sender.sendMessage(configManager.getMessage(Message.ADMIN_CHECK_BALANCE)
-                                    .replace("%player%", args[1])
-                                    .replace("%balance%", String.valueOf(balance)));
+                                    .replace(Variable.PLAYER, args[1])
+                                    .replace(Variable.BALANCE, String.valueOf(balance)));
                         } else {
                             sender.sendMessage(configManager.getError(Error.PLAYER_ACCOUNT_NOT_FOUND)
-                                    .replace("%player%", args[1]));
+                                    .replace(Variable.PLAYER, args[1]));
                         }
                     } else {
                         sender.sendMessage(configManager.getError(Error.ADMIN_BAD_ARGUMENT));
@@ -87,14 +87,14 @@ public class AdminBankCommand implements CommandExecutor {
                                 EconomyResponse economyResponse = economyAPI.depositPlayer(playerName, payAmount);
                                 if(economyResponse.transactionSuccess()) {
                                     sender.sendMessage(configManager.getMessage(Message.ADMIN_SUCCESS_ADD)
-                                            .replace("%target%", playerName)
-                                            .replace("%amount%", String.valueOf(payAmount)));
+                                            .replace(Variable.TARGET, playerName)
+                                            .replace(Variable.AMOUNT, String.valueOf(payAmount)));
                                     AddMoneyRelationEvent addMoneyRelationEvent = new AddMoneyRelationEvent(sender.getName(), playerName, payAmount);
                                     pluginManager.callEvent(addMoneyRelationEvent);
                                 }
                             } else {
                                 sender.sendMessage(this.configManager.getError(Error.PLAYER_ACCOUNT_NOT_FOUND)
-                                        .replace("%player%", playerName));
+                                        .replace(Variable.PLAYER, playerName));
                             }
                         } else {
                             sender.sendMessage(configManager.getError(Error.INVALID_NUMBER));
@@ -119,8 +119,8 @@ public class AdminBankCommand implements CommandExecutor {
                                     EconomyResponse economyResponse = economyAPI.withdrawPlayer(playerName, payAmount);
                                     if(economyResponse.transactionSuccess()) {
                                         sender.sendMessage(Message.ADMIN_SUCCESS_REMOVE
-                                                .replace("%target%", playerName)
-                                                .replace("%amount%", String.valueOf(payAmount)));
+                                                .replace(Variable.TARGET, playerName)
+                                                .replace(Variable.AMOUNT, String.valueOf(payAmount)));
                                         RemoveMoneyRelationEvent removeMoneyRelationEvent = new RemoveMoneyRelationEvent(sender.getName(), playerName, payAmount);
                                         pluginManager.callEvent(removeMoneyRelationEvent);
                                     }
@@ -145,7 +145,7 @@ public class AdminBankCommand implements CommandExecutor {
                         pluginManager.callEvent(reloadConfigurationEvent);
                     } catch (IOException | InvalidConfigurationException exception) {
                         exception.printStackTrace();
-                        sender.sendMessage("error messagea");
+                        sender.sendMessage(configManager.getError(Error.RELOAD_NOT_WORKING));
                     }
                 } else {
                     sender.sendMessage(configManager.getError(Error.ADMIN_BAD_ARGUMENT));
