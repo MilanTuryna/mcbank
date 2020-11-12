@@ -57,12 +57,17 @@ public class PlayerListener implements Listener {
             consoleCommandSender.sendMessage("§cDon't use negatives numbers (withdraw&deposit) in config.yml. Withdraw and Deposit amount will be set to 0");
         }
 
-        player.sendMessage(this.configManager.getString("events.joinEvent.message")
-                .replace(Variable.PLAYER, player.getName())
-                .replace(Variable.CURRENCY_SYMBOL, this.configManager.getCurrency())
-                .replace(Variable.BALANCE, String.valueOf(playerBalance)
-                        .replace(Variable.ACTUAL_DEPOSIT, String.valueOf(actualDeposit))
-                        .replace(Variable.ACTUAL_WITHDRAW, String.valueOf(actualWithdraw))));
+        String playerName = player.getName();
+        double finalActualDeposit = actualDeposit;
+        double finalActualWithdraw = actualWithdraw;
+        this.configManager.getList("events.joinEvent.message").forEach(msg -> {
+            // used equals("") instead of isEmpty for administrator adding new lines by " "
+            if(!msg.equals("")) player.sendMessage(msg
+                    .replace(Variable.PLAYER, playerName)
+                    .replace(Variable.BALANCE, String.valueOf(playerBalance))
+                    .replace(Variable.WITHDRAW, String.valueOf(finalActualWithdraw))
+                    .replace(Variable.ACTUAL_DEPOSIT, String.valueOf(finalActualDeposit)));
+        });
 
         economyAPI.depositPlayer(player, actualDeposit);
         if(playerBalance >= actualWithdraw) economyAPI.withdrawPlayer(player, actualWithdraw);
@@ -81,9 +86,9 @@ public class PlayerListener implements Listener {
             }
 
             if(item != null && item.getType() == headMaterial) {
-                if(NBTEditor.contains(item, MoneyBag.NBT_TAG)) {
+                if(NBTEditor.contains(item, MoneyBag.NBT_TAG_MONEY)) {
                     Inventory inventory = player.getInventory();
-                    double amount = NBTEditor.getDouble(item, MoneyBag.NBT_TAG);
+                    double amount = NBTEditor.getDouble(item, MoneyBag.NBT_TAG_MONEY);
 
                     EconomyResponse economyResponse = economyAPI.depositPlayer(player, amount);
                     if(economyResponse.transactionSuccess()) {
