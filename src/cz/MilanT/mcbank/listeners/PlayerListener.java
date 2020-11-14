@@ -61,9 +61,11 @@ public class PlayerListener implements Listener {
         String playerName = player.getName();
         double finalActualDeposit = actualDeposit;
         double finalActualWithdraw = actualWithdraw;
+        String currencySymbol = this.configManager.getCurrency();
         this.configManager.getList("events.joinEvent.message").forEach(msg -> {
             // used equals("") instead of isEmpty for administrator adding new lines by " "
             if(!msg.equals("")) player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg.replace(Variable.PLAYER, playerName)
+                    .replace(Variable.CURRENCY_SYMBOL, currencySymbol)
                     .replace(Variable.BALANCE, String.valueOf(playerBalance))
                     .replace(Variable.WITHDRAW, String.valueOf(finalActualWithdraw))
                     .replace(Variable.ACTUAL_DEPOSIT, String.valueOf(finalActualDeposit))));
