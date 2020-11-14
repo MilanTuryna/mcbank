@@ -3,12 +3,13 @@ package cz.MilanT.mcbank.constants;
 public final class Variable {
     private Variable() { }
 
+    public static final String PREFIX = "%prefix%";
     public static final String ACTUAL_DEPOSIT = "%actualDeposit%";
     public static final String ACTUAL_WITHDRAW = "%actualWithdraw%";
     public static final String BALANCE = "%balance%";
     public static final String PAY_AMOUNT = "%pay_amount%";
     public static final String AMOUNT = "%amount%";
-    public static final String KEY = "%key%"; //todo - notifyrelations
+    public static final String KEY = "%key%";
     public static final String VALUE = "%value%";
     public static final String WITHDRAW = "%withdraw%";
     public static final String FIRST_OWNER = "%firstOwner%";

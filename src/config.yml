@@ -9,7 +9,7 @@
 #
 # messages.sucessfully_sent : player,donatedplayer,currencysymbol,balance,payamount
 
-prefix: ""
+prefix: "&8[&6McBank&8] &7"
 currencySymbol: "$"
 playerPermissions: false
 notifyRelations: false

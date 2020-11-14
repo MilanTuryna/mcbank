@@ -25,6 +25,7 @@ public class Config {
     private final Plugin plugin;
     private final File file;
     private final FileConfiguration fileConfiguration;
+    private String prefix;
 
     public Config(Plugin plugin, String fileName) throws IOException, InvalidConfigurationException {
         this.plugin = plugin;
@@ -35,6 +36,7 @@ public class Config {
         }
         this.fileConfiguration = new YamlConfiguration();
         this.fileConfiguration.load(file);
+        this.prefix = this.getTranslatedString(fileConfiguration.getString("prefix"));
     }
 
     public void save() {
@@ -50,7 +52,9 @@ public class Config {
     }
 
     public String getString(String string) {
-        return this.getTranslatedString(this.getConfig().getString(string)).replace(Variable.CURRENCY_SYMBOL, this.getCurrency());
+        return this.getTranslatedString(this.getConfig().getString(string))
+                .replace(Variable.CURRENCY_SYMBOL, this.getCurrency())
+                .replace(Variable.PREFIX, this.prefix);
     }
 
     public List<String> getList(String string) {
@@ -75,6 +79,7 @@ public class Config {
 
     public void reloadConfig() throws IOException, InvalidConfigurationException {
         this.fileConfiguration.load(this.file);
+        this.prefix = this.getTranslatedString(fileConfiguration.getString("prefix"));
     }
 
     public FileConfiguration getConfig() {
