@@ -42,7 +42,7 @@ events:
   joinEvent:
     message:
       - " "
-      - "  &aRegistering §e%player% to our economy.."
+      - "  &aRegistering §e%player%&7 to our economy.."
       - "  &7Hey, welcome &e%player%&7 to our bank-system! "
       - "  &7Your momentarily account balance is a &a%balance% %currencySymbol%&7."
       - "  &6It's good, but you can do better &c&l❤&6!"
