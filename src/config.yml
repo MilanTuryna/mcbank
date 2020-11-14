@@ -41,11 +41,14 @@ events:
     deposit: 0
   joinEvent:
     message:
-      - "&8————————————————————————————————————————————————————————"
       - " "
-      - "Hello %player%! amount: %balance%, deposit: %actualDeposit%, withdraw: %actualWithdraw%"
+      - "  &aRegistering §e%player% to our economy.."
+      - "  &7Hey, welcome &e%player%&7 to our bank-system! "
+      - "  &7Your momentarily account balance is a &a%balance% %currencySymbol%&7."
+      - "  &6It's good, but you can do better &c&l❤&6!"
       - " "
-      - "&8————————————————————————————————————————————————————————"
+      - "  &7Use &f/mcbank&7 for administration of your bank account!"
+      - " "
     withdraw: 0
     deposit: 0
   quitEvent:
