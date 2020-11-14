@@ -8,6 +8,7 @@ import cz.MilanT.mcbank.storage.IStorage;
 import cz.MilanT.mcbank.vault.EconomyAPI;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -62,11 +63,10 @@ public class PlayerListener implements Listener {
         double finalActualWithdraw = actualWithdraw;
         this.configManager.getList("events.joinEvent.message").forEach(msg -> {
             // used equals("") instead of isEmpty for administrator adding new lines by " "
-            if(!msg.equals("")) player.sendMessage(msg
-                    .replace(Variable.PLAYER, playerName)
+            if(!msg.equals("")) player.sendMessage(ChatColor.translateAlternateColorCodes('&', msg.replace(Variable.PLAYER, playerName)
                     .replace(Variable.BALANCE, String.valueOf(playerBalance))
                     .replace(Variable.WITHDRAW, String.valueOf(finalActualWithdraw))
-                    .replace(Variable.ACTUAL_DEPOSIT, String.valueOf(finalActualDeposit)));
+                    .replace(Variable.ACTUAL_DEPOSIT, String.valueOf(finalActualDeposit))));
         });
 
         economyAPI.depositPlayer(player, actualDeposit);
